@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Korektor & Humanizer Bahasa AI — Interactive Paraphraser</title>
+    <title>Korektor & Humanizer Bahasa Indonesia — Standar EYD V &amp; KBBI</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Inter & Plus Jakarta Sans -->
@@ -37,7 +37,7 @@
             background: #94a3b8;
         }
 
-        /* Gaya Kalimat Interaktif di Panel Kanan (Mirip QuillBot / Drillit) */
+        /* Gaya Kalimat Interaktif di Panel Kanan (Bergaya QuillBot / Drillit) */
         .sentence-node {
             transition: all 0.15s ease;
             border-radius: 5px;
@@ -45,9 +45,9 @@
             margin: 0 1px;
             cursor: pointer;
             display: inline;
-            line-height: 1.85;
+            line-height: 1.9;
         }
-        /* Indikasi AI Tinggi (Merah/Oranye) */
+        /* Pola AI Tinggi / Pelanggaran KBBI & EYD V (Merah) */
         .sentence-high {
             background-color: #fee2e2;
             border-bottom: 2.5px solid #ef4444;
@@ -56,7 +56,7 @@
         .sentence-high:hover {
             background-color: #fecaca;
         }
-        /* Indikasi AI Sedang (Kuning/Amber) */
+        /* Saran Variasi Ritme / Ejaan Ringan (Kuning/Amber) */
         .sentence-medium {
             background-color: #fef3c7;
             border-bottom: 2.5px solid #f59e0b;
@@ -65,7 +65,7 @@
         .sentence-medium:hover {
             background-color: #fde68a;
         }
-        /* Kalimat Sudah Diperbaiki / Alami (Hijau lembut saat disorot) */
+        /* Kalimat Alami & Sesuai EYD/KBBI */
         .sentence-clean {
             border-bottom: 2px solid transparent;
         }
@@ -73,6 +73,7 @@
             background-color: #e0e7ff;
             border-bottom: 2px dashed #6366f1;
         }
+        /* Kalimat Sudah Disunting (Hijau) */
         .sentence-edited {
             background-color: #dcfce7;
             border-bottom: 2px solid #22c55e;
@@ -95,16 +96,16 @@
             <!-- Brand -->
             <div class="flex items-center gap-3">
                 <div class="bg-emerald-600 text-white p-2 rounded-xl shadow-xs">
-                    <i data-lucide="feather" class="w-5 h-5"></i>
+                    <i data-lucide="book-open-check" class="w-5 h-5"></i>
                 </div>
                 <div>
                     <div class="flex items-center gap-2">
-                        <h1 class="text-base sm:text-lg font-extrabold text-slate-900 tracking-tight">Korektor &amp; Humanizer AI</h1>
+                        <h1 class="text-base sm:text-lg font-extrabold text-slate-900 tracking-tight">Humanizer &amp; Korektor EYD V</h1>
                         <span class="hidden md:inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                            QuillBot / Drillit Style
+                            Standar KBBI &amp; Alami
                         </span>
                     </div>
-                    <p class="text-xs text-slate-500 hidden sm:block">Klik kalimat yang disorot untuk memilih variasi pengganti alami &amp; turunkan skor AI</p>
+                    <p class="text-xs text-slate-500 hidden sm:block">Ubah teks kaku AI menjadi bahasa manusia baku sesuai EYD V &amp; KBBI</p>
                 </div>
             </div>
 
@@ -137,7 +138,7 @@
                 </button>
             </div>
             <p class="text-xs text-slate-600 leading-relaxed mb-4">
-                Aplikasi ini berjalan <strong>100% gratis dalam Mode Offline</strong> tanpa API Key. Namun, jika Anda ingin mengaktifkan tombol <strong>"Parafrase Cerdas dengan Gemini"</strong>, masukkan API Key Google AI Studio Anda di bawah ini.
+                Aplikasi ini berjalan <strong>100% gratis dalam Mode Offline</strong> menggunakan kamus EYD V &amp; KBBI lokal. Jika ingin mengaktifkan tombol <strong>"Tulis Ulang Cerdas (AI + EYD)"</strong>, masukkan API Key Google AI Studio Anda di bawah ini.
             </p>
             <div class="p-3 rounded-xl bg-amber-50 border border-amber-200 text-[11px] text-amber-900 mb-4 leading-relaxed">
                 <strong>Aman untuk GitHub Pages:</strong> Kunci API disimpan hanya di <code>localStorage</code> browser Anda sendiri dan tidak pernah ditulis di dalam kode sumber HTML.
@@ -171,21 +172,21 @@
     <!-- ==================== KONTEN UTAMA ==================== -->
     <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-6">
 
-        <!-- BARIS TAB GAYA BAHASA (STYLE QUILLBOT) -->
+        <!-- BARIS TAB 4 PILIHAN GAYA BAHASA (SEMUA MEMATUHI EYD V & KBBI) -->
         <div class="bg-white rounded-t-2xl border border-b-0 border-slate-200 px-4 sm:px-5 pt-3 flex flex-wrap items-center justify-between gap-3">
             <div class="flex items-center gap-1 sm:gap-2 overflow-x-auto" id="styleTabs">
-                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider mr-1 hidden md:inline">Gaya:</span>
-                <button type="button" data-style="standar" class="style-tab active px-3.5 py-2.5 text-xs sm:text-sm font-bold border-b-2 border-emerald-600 text-emerald-700 whitespace-nowrap transition-colors">
-                    Standar Alami
+                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider mr-1 hidden xl:inline">Gaya EYD V:</span>
+                <button type="button" data-style="baku_alami" class="style-tab active px-3 py-2.5 text-xs sm:text-sm font-bold border-b-2 border-emerald-600 text-emerald-700 whitespace-nowrap transition-colors">
+                    Baku Alami (Umum)
                 </button>
-                <button type="button" data-style="akademis" class="style-tab px-3.5 py-2.5 text-xs sm:text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 whitespace-nowrap transition-colors">
-                    Akademis / Jurnal
+                <button type="button" data-style="akademis" class="style-tab px-3 py-2.5 text-xs sm:text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 whitespace-nowrap transition-colors">
+                    Akademis &amp; Jurnal (Skripsi/PTK)
                 </button>
-                <button type="button" data-style="santai" class="style-tab px-3.5 py-2.5 text-xs sm:text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 whitespace-nowrap transition-colors">
-                    Santai &amp; Mengalir
+                <button type="button" data-style="semiformal" class="style-tab px-3 py-2.5 text-xs sm:text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 whitespace-nowrap transition-colors">
+                    Semi-Formal &amp; Lugas (Artikel/Populer)
                 </button>
-                <button type="button" data-style="ringkas" class="style-tab px-3.5 py-2.5 text-xs sm:text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 whitespace-nowrap transition-colors">
-                    Ringkas / Lugas
+                <button type="button" data-style="ringkas" class="style-tab px-3 py-2.5 text-xs sm:text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 whitespace-nowrap transition-colors">
+                    Ringkas &amp; Efektif (Kalimat Efektif EYD)
                 </button>
             </div>
 
@@ -193,11 +194,11 @@
             <div class="flex items-center gap-2 pb-2.5">
                 <button id="btnAutoHumanizeOffline" type="button" class="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl shadow-2xs transition-colors">
                     <i data-lucide="wand-2" class="w-3.5 h-3.5"></i>
-                    <span>Humanize Otomatis (Offline)</span>
+                    <span>Perbaiki Otomatis (Offline EYD &amp; KBBI)</span>
                 </button>
                 <button id="btnGeminiSmart" type="button" class="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 rounded-xl transition-colors">
                     <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
-                    <span>Parafrase Cerdas Gemini</span>
+                    <span>Tulis Ulang Cerdas (AI + EYD)</span>
                 </button>
             </div>
         </div>
@@ -219,35 +220,43 @@
                             <span>Tempel</span>
                         </button>
                     </div>
-                    <button id="btnClear" type="button" class="inline-flex items-center gap-1 px-2 py-1.5 text-xs font-medium text-slate-500 hover:text-rose-600 rounded-lg transition-colors" title="Hapus semua teks">
+                    <button id="btnClear" type="button" class="inline-flex items-center gap-1 px-2 py-1.5 text-xs font-medium text-slate-500 hover:text-rose-600 rounded-lg transition-colors" title="Bersihkan teks">
                         <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-                        <span>Hapus</span>
+                        <span>Bersihkan</span>
                     </button>
                 </div>
 
                 <!-- Textarea Input -->
-                <textarea id="sourceTextarea" rows="13" class="w-full flex-1 p-4 sm:p-5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none resize-none leading-relaxed" placeholder="Ketik atau tempelkan teks Anda di sini (misalnya abstrak penelitian, artikel, atau jawaban AI)..."></textarea>
+                <textarea id="sourceTextarea" rows="13" class="w-full flex-1 p-4 sm:p-5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none resize-none leading-relaxed" placeholder="Ketik atau tempelkan naskah Anda di sini (misalnya abstrak PTK, skripsi, artikel, atau draf dari AI)..."></textarea>
 
-                <!-- Footer Panel Kiri: Statistik & Skor AI Awal -->
-                <div class="p-4 bg-slate-50 border-t border-slate-200">
-                    <div class="flex items-center justify-between text-xs mb-2">
-                        <span id="leftStats" class="text-slate-500 font-medium">0 kata &bull; 0 kalimat</span>
-                        <span class="font-semibold text-slate-700">Skor AI Awal: <strong id="initialScoreText" class="text-slate-900">0%</strong></span>
+                <!-- Footer Panel Kiri: Statistik & Skor AI Awal + Pelanggaran EYD/KBBI -->
+                <div class="p-4 bg-slate-50 border-t border-slate-200 space-y-2.5">
+                    <div class="flex flex-wrap items-center justify-between gap-2 text-xs">
+                        <span id="leftStats" class="text-slate-600 font-medium">0 kata &bull; 0 kalimat</span>
+                        <span id="initialEydBadge" class="px-2 py-0.5 rounded-md text-[11px] font-semibold bg-slate-200 text-slate-700">
+                            0 temuan KBBI / EYD V
+                        </span>
                     </div>
-                    <div class="w-full h-2 bg-slate-200 rounded-full overflow-hidden">
-                        <div id="initialScoreBar" class="h-full bg-slate-400 transition-all duration-300" style="width: 0%"></div>
+                    <div>
+                        <div class="flex items-center justify-between text-xs mb-1">
+                            <span class="text-slate-500 font-medium">Indikasi Pola AI Awal:</span>
+                            <strong id="initialScoreText" class="text-slate-900">0%</strong>
+                        </div>
+                        <div class="w-full h-2 bg-slate-200 rounded-full overflow-hidden">
+                            <div id="initialScoreBar" class="h-full bg-slate-400 transition-all duration-300" style="width: 0%"></div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- ==================== PANEL KANAN: EDITOR INTERAKTIF & POPUP SARAN ==================== -->
+            <!-- ==================== PANEL KANAN: HASIL PENYUNTINGAN INTERAKTIF EYD & KBBI ==================== -->
             <div class="lg:col-span-7 flex flex-col bg-white relative">
                 <!-- Toolbar Panel Kanan -->
                 <div class="px-4 py-2.5 bg-slate-50/80 border-b border-slate-200 flex flex-wrap items-center justify-between gap-2">
-                    <div class="flex items-center gap-3 text-[11px] font-medium text-slate-600">
-                        <span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-xs bg-red-200 border-b-2 border-red-500"></span> Pola AI Tinggi</span>
-                        <span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-xs bg-amber-200 border-b-2 border-amber-500"></span> Perlu Variasi</span>
-                        <span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-xs bg-green-200 border-b-2 border-green-500"></span> Diperbaiki</span>
+                    <div class="flex flex-wrap items-center gap-2.5 text-[11px] font-medium text-slate-600">
+                        <span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-xs bg-red-200 border-b-2 border-red-500"></span> Pola AI / Tidak Baku</span>
+                        <span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-xs bg-amber-200 border-b-2 border-amber-500"></span> Variasi Ritme / EYD</span>
+                        <span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-xs bg-green-200 border-b-2 border-green-500"></span> Sesuai EYD &amp; Alami</span>
                     </div>
                     <div class="flex items-center gap-1.5">
                         <button id="btnResetAll" type="button" class="inline-flex items-center gap-1 px-2.5 py-1.5 text-xs font-medium text-slate-600 hover:text-slate-900 bg-white hover:bg-slate-100 border border-slate-200 rounded-lg transition-colors" title="Kembalikan semua kalimat ke teks awal">
@@ -269,20 +278,20 @@
                 <div id="interactiveOutputContainer" class="flex-1 p-4 sm:p-5 text-sm text-slate-800 min-h-[260px] max-h-[380px] overflow-y-auto">
                     <div class="h-full flex flex-col items-center justify-center text-center text-slate-400 py-10">
                         <i data-lucide="mouse-pointer-click" class="w-8 h-8 mb-2 text-slate-300"></i>
-                        <p class="text-xs sm:text-sm font-medium text-slate-500">Hasil analisis interaktif akan muncul di sini.</p>
-                        <p class="text-xs text-slate-400 mt-1">Klik kalimat mana saja untuk mengganti frasa atau memperhalus struktur kalimatnya.</p>
+                        <p class="text-xs sm:text-sm font-medium text-slate-500">Hasil penyuntingan interaktif EYD V &amp; KBBI akan muncul di sini.</p>
+                        <p class="text-xs text-slate-400 mt-1">Klik kalimat mana pun untuk melihat diagnosis ejaan, kata baku KBBI, dan 3–4 opsi kalimat alami.</p>
                     </div>
                 </div>
 
-                <!-- ==================== PANEL POPUP SARAN PENGGANTIAN KALIMAT ==================== -->
+                <!-- ==================== LACI SARAN PENGGANTIAN KALIMAT (INTERACTIVE SENTENCE DRAWER) ==================== -->
                 <div id="sentenceEditorDrawer" class="hidden border-t-2 border-indigo-500 bg-indigo-50/40 p-4 sm:p-5 transition-all">
                     <div class="flex items-start justify-between gap-2 mb-2.5">
                         <div>
-                            <div class="flex flex-wrap items-center gap-2">
+                            <div class="flex flex-wrap items-center gap-1.5">
                                 <span id="drawerSentenceIndex" class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-indigo-600 text-white">Kalimat #1</span>
-                                <span id="drawerReasonBadge" class="px-2 py-0.5 rounded-md text-[11px] font-semibold bg-amber-100 text-amber-900 border border-amber-300">Terdeteksi Klise AI</span>
+                                <span id="drawerReasonBadge" class="px-2 py-0.5 rounded-md text-[11px] font-semibold bg-amber-100 text-amber-900 border border-amber-300">Diagnosis EYD &amp; AI</span>
                             </div>
-                            <p id="drawerReasonDesc" class="text-xs text-slate-600 mt-1">Klik salah satu variasi kalimat alami di bawah ini untuk langsung mengganti kalimat terpilih:</p>
+                            <p id="drawerReasonDesc" class="text-xs text-slate-700 mt-1.5 leading-relaxed">Penjelasan diagnosis akan muncul di sini.</p>
                         </div>
                         <button id="btnCloseDrawer" type="button" class="text-slate-400 hover:text-slate-700 p-1 rounded-lg hover:bg-white">
                             <i data-lucide="x" class="w-4 h-4"></i>
@@ -296,47 +305,58 @@
 
                     <!-- Kotak Edit Manual untuk Kalimat Terpilih -->
                     <div class="bg-white p-2.5 rounded-xl border border-slate-200 flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
-                        <input id="manualSentenceInput" type="text" class="flex-1 text-xs sm:text-sm text-slate-800 px-2.5 py-1.5 focus:outline-none" placeholder="Atau ketik revisi manual Anda sendiri untuk kalimat ini...">
+                        <input id="manualSentenceInput" type="text" class="flex-1 text-xs sm:text-sm text-slate-800 px-2.5 py-1.5 focus:outline-none" placeholder="Atau ketik suntingan manual Anda sendiri sesuai EYD V...">
                         <button id="btnApplyManualSentence" type="button" class="px-3 py-1.5 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg shrink-0 transition-colors">
                             Terapkan Editan
                         </button>
                     </div>
                 </div>
 
-                <!-- Footer Panel Kanan: Skor Deteksi AI Real-Time Setelah Suntingan -->
-                <div class="p-4 bg-slate-50 border-t border-slate-200">
-                    <div class="flex flex-wrap items-center justify-between gap-2 text-xs mb-2">
+                <!-- Footer Panel Kanan: Skor Deteksi AI Real-Time & Indikator Kepatuhan EYD V / KBBI -->
+                <div class="p-4 bg-slate-50 border-t border-slate-200 space-y-2.5">
+                    <div class="flex flex-wrap items-center justify-between gap-2 text-xs">
                         <div class="flex items-center gap-1.5">
-                            <i data-lucide="shield-check" class="w-4 h-4 text-emerald-600"></i>
-                            <span class="font-semibold text-slate-700">Skor Deteksi AI Saat Ini:</span>
+                            <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600"></i>
+                            <span class="font-semibold text-slate-700">Status Kepatuhan EYD V &amp; KBBI:</span>
                         </div>
-                        <div class="flex items-center gap-2">
-                            <span id="finalScoreBadge" class="px-2.5 py-0.5 rounded-full font-bold bg-slate-200 text-slate-700">0%</span>
-                            <span id="finalScoreVerdict" class="text-slate-500 font-medium">Menunggu teks</span>
-                        </div>
+                        <span id="finalEydBadge" class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-slate-200 text-slate-700">
+                            Menunggu teks
+                        </span>
                     </div>
-                    <div class="w-full h-2.5 bg-slate-200 rounded-full overflow-hidden">
-                        <div id="finalScoreBar" class="h-full bg-emerald-500 transition-all duration-300" style="width: 0%"></div>
+                    <div>
+                        <div class="flex flex-wrap items-center justify-between gap-2 text-xs mb-1">
+                            <span class="font-semibold text-slate-700">Skor Deteksi AI Setelah Suntingan:</span>
+                            <div class="flex items-center gap-2">
+                                <span id="finalScoreBadge" class="px-2.5 py-0.5 rounded-full font-bold bg-slate-200 text-slate-700">0%</span>
+                                <span id="finalScoreVerdict" class="text-slate-500 font-medium">Menunggu teks</span>
+                            </div>
+                        </div>
+                        <div class="w-full h-2.5 bg-slate-200 rounded-full overflow-hidden">
+                            <div id="finalScoreBar" class="h-full bg-emerald-500 transition-all duration-300" style="width: 0%"></div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- PANDUAN SINGKAT KUSTOMISASI UNTUK DEVELOPER / PENGGUNA -->
+        <!-- PANDUAN KUSTOMISASI KAMUS LOKAL UNTUK PENGGUNA -->
         <section class="mt-6 bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div class="flex items-start gap-3">
                 <div class="p-2 rounded-xl bg-slate-100 text-slate-700 shrink-0 mt-0.5">
                     <i data-lucide="code-2" class="w-5 h-5"></i>
                 </div>
                 <div>
-                    <h2 class="text-sm font-bold text-slate-900">Mudah Dikustomisasi &amp; Siap untuk GitHub Pages</h2>
+                    <h2 class="text-sm font-bold text-slate-900">Kustomisasi Kamus KBBI, Aturan EYD V &amp; Klise AI</h2>
                     <p class="text-xs text-slate-600 mt-0.5 leading-relaxed">
-                        Buka file HTML ini di editor teks dan ubah variabel <code class="px-1.5 py-0.5 bg-slate-100 rounded text-indigo-700 font-semibold">KAMUS_KLISE_AI</code> di bagian paling atas blok <code>&lt;script&gt;</code> untuk menambahkan istilah teknis bidang Anda sendiri (misalnya istilah teknik, hukum, atau pendidikan).
+                        Anda dapat membuka file HTML ini dan langsung mengubah tiga objek konfigurasi di bagian paling atas blok <code>&lt;script&gt;</code>:
+                        <code class="px-1.5 py-0.5 bg-slate-100 rounded text-emerald-700 font-semibold">KAMUS_KBBI_TIDAK_BAKU</code>,
+                        <code class="px-1.5 py-0.5 bg-slate-100 rounded text-indigo-700 font-semibold">ATURAN_EYD_V</code>, dan
+                        <code class="px-1.5 py-0.5 bg-slate-100 rounded text-rose-700 font-semibold">KAMUS_KLISE_AI</code>.
                     </p>
                 </div>
             </div>
             <span class="text-[11px] font-semibold px-3 py-1.5 rounded-xl bg-slate-100 text-slate-600 shrink-0">
-                Single-File HTML &bull; v2.0
+                Single-File HTML &bull; EYD V &amp; KBBI
             </span>
         </section>
     </main>
@@ -344,171 +364,335 @@
     <!-- ==================== SCRIPT APLIKASI ==================== -->
     <script>
         /* ============================================================================
-         * 1. KAMUS KLISE & POLA KALIMAT AI (MUDAH DIUBAH / DITAMBAH SENDIRI)
+         * 1. KAMUS KATA TIDAK BAKU -> KATA BAKU SESUAI KBBI (MUDAH DIEDIT)
          * ============================================================================
-         * Panduan Kustomisasi:
-         * - regex    : Pola kata/frasa yang ingin dideteksi (gunakan /.../gi agar tidak peka huruf besar/kecil).
-         * - label    : Nama kategori masalah yang muncul di badge peringatan.
-         * - reason   : Penjelasan singkat mengapa frasa ini terdeteksi sebagai pola AI.
-         * - weight   : Bobot skor AI (semakin besar angka, semakin tinggi kenaikan skor AI).
-         * - replaces : Objek berisi array opsi pengganti berdasarkan gaya bahasa:
-         *              { standar: [...], akademis: [...], santai: [...], ringkas: [...] }
+         * Panduan Menambah / Mengubah Daftar KBBI:
+         * - tidakBaku : Kata tidak baku yang sering salah ketik (huruf kecil).
+         * - baku      : Bentuk kata baku resmi menurut Kamus Besar Bahasa Indonesia (KBBI).
+         * - catatan   : Penjelasan singkat kebahasaan untuk ditampilkan di laci saran.
+         * ============================================================================ */
+        const KAMUS_KBBI_TIDAK_BAKU = [
+            { tidakBaku: "analisa", baku: "analisis", catatan: "Bentuk baku menurut KBBI adalah 'analisis' (serapan dari bahasa Inggris 'analysis')." },
+            { tidakBaku: "praktek", baku: "praktik", catatan: "Bentuk baku KBBI menggunakan huruf 'i' ('praktik'), sedangkan bentuk berimbuhannya adalah 'mempraktikkan'." },
+            { tidakBaku: "merubah", baku: "mengubah", catatan: "Kata dasar 'ubah' mendapat prefiks 'meng-' menjadi 'mengubah' (bukan 'merubah' yang berarti menjadi seperti rubah)." },
+            { tidakBaku: "aktifitas", baku: "aktivitas", catatan: "Bentuk baku KBBI menggunakan huruf 'v' ('aktivitas', 'efektivitas', 'kreativitas')." },
+            { tidakBaku: "efektifitas", baku: "efektivitas", catatan: "Kata sifat 'efektif' jika mendapat akhiran '-itas' berubah menjadi 'efektivitas' sesuai KBBI." },
+            { tidakBaku: "kreatifitas", baku: "kreativitas", catatan: "Bentuk baku KBBI menggunakan huruf 'v' ('kreativitas')." },
+            { tidakBaku: "resiko", baku: "risiko", catatan: "Bentuk baku menurut KBBI adalah 'risiko' (menggunakan huruf 'i', bukan 'e')." },
+            { tidakBaku: "sistim", baku: "sistem", catatan: "Bentuk baku menurut KBBI adalah 'sistem' (menggunakan huruf 'e', sedangkan bentuk turunannya 'sistematis')." },
+            { tidakBaku: "metoda", baku: "metode", catatan: "Bentuk baku menurut KBBI adalah 'metode' (berakhiran '-e')." },
+            { tidakBaku: "subyek", baku: "subjek", catatan: "Sesuai kaidah penyerapan EYD V & KBBI, gugus konsonan 'yek' diserap menjadi 'jek' ('subjek')." },
+            { tidakBaku: "obyek", baku: "objek", catatan: "Sesuai kaidah penyerapan EYD V & KBBI, gugus konsonan 'yek' diserap menjadi 'jek' ('objek')." },
+            { tidakBaku: "tehnik", baku: "teknik", catatan: "Bentuk baku menurut KBBI adalah 'teknik' (menggunakan 'k', bukan 'h')." },
+            { tidakBaku: "ijin", baku: "izin", catatan: "Bentuk baku menurut KBBI adalah 'izin' (menggunakan huruf 'z')." },
+            { tidakBaku: "karna", baku: "karena", catatan: "Bentuk baku menurut KBBI adalah 'karena'." },
+            { tidakBaku: "sekedar", baku: "sekadar", catatan: "Kata dasarnya adalah 'kadar', sehingga bentuk bakunya adalah 'sekadar'." },
+            { tidakBaku: "signifikansi", baku: "signifikansi", catatan: "Sudah baku, namun pastikan tidak berlebihan penggunaannya agar tidak terkesan terjemahan AI." },
+            { tidakBaku: "hipotesa", baku: "hipotesis", catatan: "Bentuk baku menurut KBBI adalah 'hipotesis'." },
+            { tidakBaku: "diagnosa", baku: "diagnosis", catatan: "Bentuk baku menurut KBBI adalah 'diagnosis'." },
+            { tidakBaku: "katagori", baku: "kategori", catatan: "Bentuk baku menurut KBBI adalah 'kategori'." },
+            { tidakBaku: "kwalitas", baku: "kualitas", catatan: "Bentuk baku menurut KBBI adalah 'kualitas' (menggunakan 'ku-', bukan 'kw-')." },
+            { tidakBaku: "kwantitas", baku: "kuantitas", catatan: "Bentuk baku menurut KBBI adalah 'kuantitas'." },
+            { tidakBaku: "jadwal", baku: "jadwal", catatan: "Bentuk baku adalah 'jadwal' (bukan 'jadual')." },
+            { tidakBaku: "jadual", baku: "jadwal", catatan: "Bentuk baku menurut KBBI adalah 'jadwal'." },
+            { tidakBaku: "mengkesampingkan", baku: "mengesampingkan", catatan: "Huruf 'k' pada kata dasar 'ke samping' luluh saat mendapat awalan 'meng-' menjadi 'mengesampingkan'." },
+            { tidakBaku: "mempengaruhi", baku: "memengaruhi", catatan: "Sesuai kaidah peluluhan K-P-T-S dalam EYD V, 'meng- + pengaruh + -i' menjadi 'memengaruhi'." },
+            { tidakBaku: "memperhatikan", baku: "memerhatikan", catatan: "Kata dasar 'perhati' meluluh menjadi 'memerhatikan' (atau 'memperhatikan' dari dasar 'hati' dengan prefiks 'memper-')." },
+            { tidakBaku: "standarisasi", baku: "standardisasi", catatan: "Bentuk baku menurut KBBI adalah 'standardisasi'." },
+            { tidakBaku: "terimakasih", baku: "terima kasih", catatan: "Penulisan gabungan kata 'terima kasih' harus dipisah sesuai kaidah EYD V." }
+        ];
+
+        /* ============================================================================
+         * 2. ATURAN EJAAN YANG DISEMPURNAKAN EDISI KELIMA (ATURAN_EYD_V)
+         * ============================================================================
+         * Panduan Menambah / Mengubah Aturan EYD V:
+         * - regex       : Pola kesalahan ejaan (kata depan 'di/ke' digabung, tanda baca, dll.).
+         * - replacement : Bentuk perbaikan yang sesuai kaidah EYD V.
+         * - label       : Kategori kaidah EYD V yang dilanggar.
+         * - reason      : Penjelasan kaidah EYD V agar pengguna memahami alasannya.
+         * ============================================================================ */
+        const ATURAN_EYD_V = [
+            {
+                regex: /\bdidalam\b/gi,
+                replacement: "di dalam",
+                label: "EYD V: Kata Depan 'di'",
+                reason: "Kata depan 'di' yang menunjukkan tempat atau ruang harus ditulis terpisah dari kata yang mengikutinya ('di dalam')."
+            },
+            {
+                regex: /\bdiatas\b/gi,
+                replacement: "di atas",
+                label: "EYD V: Kata Depan 'di'",
+                reason: "Kata depan 'di' yang menunjukkan letak/posisi harus ditulis terpisah ('di atas')."
+            },
+            {
+                regex: /\bdibawah\b/gi,
+                replacement: "di bawah",
+                label: "EYD V: Kata Depan 'di'",
+                reason: "Kata depan 'di' yang menunjukkan letak/posisi harus ditulis terpisah ('di bawah')."
+            },
+            {
+                regex: /\bdisini\b/gi,
+                replacement: "di sini",
+                label: "EYD V: Kata Depan 'di'",
+                reason: "Penunjuk tempat 'di sini' wajib ditulis terpisah sesuai kaidah EYD V."
+            },
+            {
+                regex: /\bdisana\b/gi,
+                replacement: "di sana",
+                label: "EYD V: Kata Depan 'di'",
+                reason: "Penunjuk tempat 'di sana' wajib ditulis terpisah sesuai kaidah EYD V."
+            },
+            {
+                regex: /\bdisitu\b/gi,
+                replacement: "di situ",
+                label: "EYD V: Kata Depan 'di'",
+                reason: "Penunjuk tempat 'di situ' wajib ditulis terpisah sesuai kaidah EYD V."
+            },
+            {
+                regex: /\bdisekolah\b/gi,
+                replacement: "di sekolah",
+                label: "EYD V: Kata Depan 'di'",
+                reason: "Kata depan 'di' di depan kata benda tempat ('sekolah') harus dipisah menjadi 'di sekolah'."
+            },
+            {
+                regex: /\bdikelas\b/gi,
+                replacement: "di kelas",
+                label: "EYD V: Kata Depan 'di'",
+                reason: "Kata depan 'di' di depan kata benda tempat ('kelas') harus dipisah menjadi 'di kelas'."
+            },
+            {
+                regex: /\bdirumah\b/gi,
+                replacement: "di rumah",
+                label: "EYD V: Kata Depan 'di'",
+                reason: "Kata depan 'di' di depan kata benda tempat ('rumah') harus dipisah menjadi 'di rumah'."
+            },
+            {
+                regex: /\bkedalam\b/gi,
+                replacement: "ke dalam",
+                label: "EYD V: Kata Depan 'ke'",
+                reason: "Kata depan 'ke' yang menunjukkan arah tujuan harus ditulis terpisah ('ke dalam')."
+            },
+            {
+                regex: /\bkeluar\s+dari\b/gi,
+                replacement: "ke luar dari",
+                label: "EYD V: Kata Depan 'ke'",
+                reason: "Sebagai lawan dari 'ke dalam', kata depan arah ditulis terpisah ('ke luar')."
+            },
+            {
+                regex: /([a-zA-Z0-9\)])\s+(sedangkan|melainkan)\b/g,
+                replacement: "$1, $2",
+                label: "EYD V: Tanda Koma Intrakalimat",
+                reason: "Menurut EYD V, tanda koma wajib dipakai sebelum kata penghubung pertentangan intrakalimat seperti 'sedangkan' dan 'melainkan'."
+            },
+            {
+                regex: /\bantar\s+([a-z]+)/gi,
+                replacement: "antar$1",
+                label: "EYD V: Bentuk Terikat 'antar-'",
+                reason: "Bentuk terikat 'antar-' ditulis serangkai dengan kata dasar yang mengikutinya (misalnya 'antarsiswa', 'antarkelas')."
+            },
+            {
+                regex: /\bpasca\s+([a-z]+)/gi,
+                replacement: "pasca$1",
+                label: "EYD V: Bentuk Terikat 'pasca-'",
+                reason: "Bentuk terikat 'pasca-' ditulis serangkai dengan kata dasar yang mengikutinya (misalnya 'pascapanen', 'pascatindakan')."
+            },
+            {
+                regex: /\bpra\s+([a-z]+)/gi,
+                replacement: "pra$1",
+                label: "EYD V: Bentuk Terikat 'pra-'",
+                reason: "Bentuk terikat 'pra-' ditulis serangkai dengan kata dasar yang mengikutinya (misalnya 'prasiklus', 'prasyarat')."
+            }
+        ];
+
+        /* ============================================================================
+         * 3. KAMUS KLISE & POLA TERJEMAHAN KAKU AI (KAMUS_KLISE_AI)
+         * ============================================================================
+         * Panduan Menambah / Mengubah Pola Klise AI:
+         * - regex    : Pola frasa/kalimat terjemahan AI yang ingin dideteksi.
+         * - label    : Label peringatan yang tampil saat kalimat diklik.
+         * - reason   : Penjelasan mengapa pola ini terdeteksi AI & bagaimana membuatnya alami.
+         * - weight   : Bobot kenaikan skor deteksi AI (10 - 20).
+         * - replaces : Pilihan pengganti alami sesuai EYD V & KBBI untuk 4 gaya bahasa:
+         *              { baku_alami: [...], akademis: [...], semiformal: [...], ringkas: [...] }
          * ============================================================================ */
         const KAMUS_KLISE_AI = [
             {
                 regex: /Latar belakang penelitian ini adalah\s+/gi,
-                label: "Pembuka Template AI",
-                reason: "Frasa pembuka 'Latar belakang penelitian ini adalah...' terlalu kaku dan sering menjadi template default generator teks AI.",
+                label: "Pola Pembuka Template AI",
+                reason: "Frasa pembuka 'Latar belakang penelitian ini adalah...' merupakan pola template standar AI. Membalik susunan subjek-predikat membuatnya jauh lebih alami dan akademis.",
                 weight: 18,
                 replaces: {
-                    standar: ["Penelitian ini berangkat dari masalah ", "Dasar dilakukannya penelitian ini ialah ", "Masalah utama yang melatarbelakangi kajian ini adalah "],
+                    baku_alami: ["Penelitian ini berangkat dari permasalahan ", "Dasar pelaksanaan penelitian ini ialah ", "Masalah utama yang melatarbelakangi kajian ini adalah "],
                     akademis: ["Penelitian ini dilatarbelakangi oleh ", "Urgensi penelitian ini bertumpu pada ", "Kajian ini berawal dari permasalahan "],
-                    santai: ["Penelitian ini berawal dari kondisi ", "Kami meneliti hal ini karena adanya ", "Ide penelitian ini muncul dari masalah "],
-                    ringkas: ["Penelitian ini mengatasi ", "Kajian ini berfokus pada ", "Masalah pokok penelitian ini ialah "]
+                    semiformal: ["Penelitian ini berawal dari kondisi ", "Kajian ini dilakukan karena adanya masalah ", "Permasalahan nyata di lapangan berupa "],
+                    ringkas: ["Penelitian ini mengatasi ", "Masalah pokok penelitian ini ialah ", "Kajian ini berfokus pada "]
                 }
             },
             {
                 regex: /Hal ini disebabkan oleh\s+/gi,
-                label: "Kata Rujukan Repetitif",
-                reason: "Penggunaan 'Hal ini disebabkan oleh' di awal kalimat kedua adalah ciri khas struktur sebab-akibat AI.",
+                label: "Kata Rujukan Repetitif AI",
+                reason: "Mengawali kalimat kedua dengan 'Hal ini disebabkan oleh' adalah pola transisi mekanis yang sering muncul pada teks buatan AI.",
                 weight: 15,
                 replaces: {
-                    standar: ["Kondisi tersebut dipicu oleh ", "Situasi ini muncul karena ", "Penyebab utamanya adalah "],
-                    akademis: ["Fenomena tersebut dipicu oleh ", "Kondisi ini terjadi akibat ", "Faktor pemicunya meliputi "],
-                    santai: ["Masalah ini muncul gara-gara ", "Ini terjadi karena ", "Pemicunya adalah "],
-                    ringkas: ["Pemicunya adalah ", "Kondisi ini akibat ", "Penyebabnya yakni "]
+                    baku_alami: ["Kondisi tersebut dipicu oleh ", "Situasi ini muncul karena ", "Penyebab utamanya adalah "],
+                    akademis: ["Fenomena tersebut dipicu oleh ", "Kondisi ini terjadi akibat ", "Faktor penyebabnya meliputi "],
+                    semiformal: ["Masalah ini muncul akibat ", "Situasi tersebut terjadi karena ", "Pemicu utamanya adalah "],
+                    ringkas: ["Pemicunya ialah ", "Kondisi ini akibat ", "Penyebabnya yakni "]
                 }
             },
             {
                 regex: /,\s*di mana\s+/gi,
-                label: "Kata Hubung Terjemahan Kaku",
-                reason: "Kata 'di mana' sebagai penghubung klausa merupakan terjemahan harfiah dari 'where/in which' dalam bahasa Inggris.",
+                label: "Kata Hubung Terjemahan AI ('di mana')",
+                reason: "Dalam kaidah EYD V & tata bahasa baku Indonesia, kata 'di mana' adalah kata tanya tempat, bukan kata hubung klausa (terjemahan kaku dari 'where/in which').",
+                weight: 18,
+                replaces: {
+                    baku_alami: [". Dalam pelaksanaannya, ", ". Pada setiap tahapnya, ", " dengan tahapan yang "],
+                    akademis: [". Setiap siklus mencakup ", ", yang masing-masing meliputi ", " melalui tahapan yang "],
+                    semiformal: [". Pada tiap siklus, kegiatan ", " yang rangkaiannya ", ". Setiap siklus memiliki "],
+                    ringkas: [". Tiap siklus meliputi ", " yang mencakup ", "; masing-masing terdiri atas "]
+                }
+            },
+            {
+                regex: /\bhal ini dikarenakan\b/gi,
+                label: "Tidak Baku & Pola AI ('dikarenakan')",
+                reason: "Menurut KBBI & EYD V, bentuk baku yang tepat adalah 'disebabkan oleh' atau 'karena' (imbuhan 'di-kan' tidak tepat melekat pada kata tugas 'karena').",
                 weight: 16,
                 replaces: {
-                    standar: [". Dalam pelaksanaannya, ", " dengan tahapan yang ", ". Pada tiap tahapnya, "],
-                    akademis: [". Setiap siklus mencakup ", ", yang masing-masing meliputi ", " melalui tahapan yang "],
-                    santai: [". Di tiap putarannya, ", " yang isinya ", ". Nah, setiap siklus punya "],
-                    ringkas: [". Tiap siklus meliputi ", " yang mencakup ", "; masing-masing terdiri dari "]
+                    baku_alami: ["kondisi ini disebabkan oleh", "hal tersebut terjadi karena", "situasi ini dipicu oleh"],
+                    akademis: ["fenomena tersebut disebabkan oleh", "kondisi ini terjadi karena", "hal tersebut berakar pada"],
+                    semiformal: ["masalah ini terjadi karena", "kondisi ini muncul akibat", "situasi tersebut dipicu oleh"],
+                    ringkas: ["hal ini akibat", "penyebabnya ialah", "kondisi ini karena"]
                 }
             },
             {
                 regex: /menunjukkan adanya peningkatan yang signifikan pada\s+/gi,
                 label: "Frasa Klise Hasil AI",
-                reason: "Kombinasi 'menunjukkan adanya ... yang signifikan' sangat sering dihasilkan AI saat merangkum data.",
+                reason: "Frasa 'menunjukkan adanya ... yang signifikan' terlalu sering dipakai AI saat merangkum temuan penelitian.",
                 weight: 18,
                 replaces: {
-                    standar: ["memperlihatkan kenaikan nyata pada ", "membuktikan bahwa terjadi peningkatan pada ", "menegaskan adanya perbaikan pada "],
+                    baku_alami: ["memperlihatkan kenaikan nyata pada ", "membuktikan bahwa terjadi peningkatan pada ", "menegaskan adanya perbaikan pada "],
                     akademis: ["memperlihatkan kenaikan capaian pada ", "mengonfirmasi peningkatan terukur pada ", "menunjukkan perbaikan konsisten pada "],
-                    santai: ["membuktikan kalau ada kenaikan bagus pada ", "memperlihatkan lonjakan pada ", "menunjukkan hasil yang jauh lebih baik pada "],
+                    semiformal: ["membuktikan adanya lonjakan pada ", "memperlihatkan hasil yang jauh lebih baik pada ", "menunjukkan kenaikan yang jelas pada "],
                     ringkas: ["meningkatkan ", "menaikkan capaian ", "memperbaiki "]
                 }
             },
             {
                 regex: /Berdasarkan hasil tersebut,\s*dapat disimpulkan bahwa\s+/gi,
                 label: "Transisi Kesimpulan Robot",
-                reason: "Frasa transisi kesimpulan panjang seperti ini terlalu mekanis dan mudah dikenali detektor AI.",
+                reason: "Frasa transisi kesimpulan panjang seperti ini terlalu mekanis dan mudah dikenali oleh detektor AI.",
                 weight: 16,
                 replaces: {
-                    standar: ["Dengan demikian, ", "Hasil ini membuktikan bahwa ", "Temuan tersebut menegaskan bahwa "],
-                    akademis: ["Dengan demikian, terbukti bahwa ", "Temuan empiris ini menunjukkan bahwa ", "Hasil tindakan mengonfirmasi bahwa "],
-                    santai: ["Jadi, bisa dipastikan bahwa ", "Dari hasil tadi, jelas bahwa ", "Intinya, "],
-                    ringkas: ["Jadi, ", "Terbukti bahwa ", "Kesimpulannya, "]
+                    baku_alami: ["Dengan demikian, ", "Hasil ini membuktikan bahwa ", "Temuan tersebut menegaskan bahwa "],
+                    akademis: ["Dengan demikian, terbukti bahwa ", "Temuan empiris ini mengonfirmasi bahwa ", "Hasil tindakan menunjukkan bahwa "],
+                    semiformal: ["Dari hasil tersebut, jelas bahwa ", "Temuan ini membuktikan bahwa ", "Artinya, "],
+                    ringkas: ["Jadi, ", "Terbukti bahwa ", "Simpulannya, "]
                 }
             },
             {
                 regex: /berimplikasi pada pentingnya\s+/gi,
-                label: "Diksi Hiperbolis AI",
-                reason: "Frasa 'berimplikasi pada pentingnya' terdengar berbelit-belit dan khas gaya penulisan mesin.",
+                label: "Diksi Berbelit Khas AI",
+                reason: "Frasa 'berimplikasi pada pentingnya' terdengar berbelit-belit. Kalimat efektif EYD V lebih mengutamakan kejelasan makna.",
                 weight: 16,
                 replaces: {
-                    standar: ["menegaskan perlunya ", "menunjukkan betapa pentingnya ", "mendorong perlunya "],
+                    baku_alami: ["menegaskan perlunya ", "menunjukkan betapa pentingnya ", "mendorong perlunya "],
                     akademis: ["menggarisbawahi urgensi ", "menegaskan peran strategis ", "memberikan implikasi praktis terhadap perlunya "],
-                    santai: ["menunjukkan kalau guru perlu ", "membuktikan pentingnya ", "mengingatkan kita soal pentingnya "],
+                    semiformal: ["menunjukkan bahwa guru perlu ", "membuktikan pentingnya ", "mengingatkan perlunya "],
                     ringkas: ["menegaskan perlunya ", "menuntut ", "mendorong "]
                 }
             },
             {
                 regex: /untuk menciptakan pembelajaran bahasa yang bermakna/gi,
                 label: "Penutup Klise AI",
-                reason: "Frasa 'menciptakan [X] yang bermakna' adalah kalimat penutup klise yang paling sering muncul di teks pendidikan buatan AI.",
+                reason: "Frasa 'menciptakan [X] yang bermakna' merupakan pola kalimat penutup klise yang paling sering dihasilkan oleh model AI.",
                 weight: 18,
                 replaces: {
-                    standar: ["agar siswa lebih mudah memahami kosakata baru secara aktif", "sehingga proses belajar bahasa terasa lebih hidup", "supaya siswa tidak cepat bosan saat memahami bacaan"],
+                    baku_alami: ["agar siswa lebih mudah memahami kosakata baru secara aktif", "sehingga proses belajar bahasa terasa lebih hidup", "supaya siswa tidak cepat bosan saat memahami bacaan"],
                     akademis: ["guna mengoptimalkan pemerolehan kosakata siswa di kelas", "untuk membangun suasana belajar yang partisipatif dan efektif", "demi mendukung pemahaman bacaan siswa secara berkelanjutan"],
-                    santai: ["biar siswa lebih semangat dan gampang paham kosakata baru", "supaya kelas jadi seru dan siswa tidak bosan", "agar anak-anak lebih cepat menangkap isi bacaan"],
-                    ringkas: ["agar pemahaman kosakata siswa lebih optimal", "untuk meningkatkan efektivitas belajar bahasa", "supaya siswa lebih aktif memahami bacaan"]
-                }
-            },
-            {
-                regex: /\bmenyelami(\s+lebih\s+dalam)?\b/gi,
-                label: "Kosakata Terjemahan AI (Delve)",
-                reason: "Kata 'menyelami' sering dipakai AI sebagai terjemahan langsung dari kata bahasa Inggris 'delve'.",
-                weight: 14,
-                replaces: {
-                    standar: ["mengulas", "membahas", "memahami"],
-                    akademis: ["mengkaji", "menganalisis", "menelaah"],
-                    santai: ["membahas", "mengulik", "melihat"],
-                    ringkas: ["mengulas", "mengkaji", "membahas"]
-                }
-            },
-            {
-                regex: /\b(tidak|tak)\s+dapat\s+dipungkiri(\s+bahwa)?\b/gi,
-                label: "Frasa Pengisi (Filler AI)",
-                reason: "Frasa basa-basi yang tidak menambah informasi baru dan sering dipakai AI untuk memperpanjang kalimat.",
-                weight: 14,
-                replaces: {
-                    standar: ["memang", "kenyataannya", "pada dasarnya"],
-                    akademis: ["secara faktual", "realitasnya", "sebagaimana diketahui"],
-                    santai: ["memang", "nyatanya", "jujur saja"],
-                    ringkas: ["nyatanya", "memang", "faktanya"]
-                }
-            },
-            {
-                regex: /\blanskap\b/gi,
-                label: "Metafora Klise AI (Landscape)",
-                reason: "Kata 'lanskap' di luar konteks geografi merupakan terjemahan langsung dari metafora AI 'landscape'.",
-                weight: 14,
-                replaces: {
-                    standar: ["dunia", "situasi", "kondisi"],
-                    akademis: ["ekosistem", "konstelasi", "lingkungan"],
-                    santai: ["dunia", "suasana", "kondisi"],
-                    ringkas: ["ranah", "dunia", "situasi"]
+                    semiformal: ["agar siswa lebih bersemangat dan mudah menguasai kosakata baru", "supaya suasana kelas lebih hidup dan siswa tidak jenuh", "agar anak-anak lebih cepat menangkap isi bacaan"],
+                    ringkas: ["agar penguasaan kosakata siswa lebih optimal", "untuk meningkatkan efektivitas pembelajaran bahasa", "supaya siswa lebih aktif memahami bacaan"]
                 }
             },
             {
                 regex: /\bkrusial\b/gi,
-                label: "Kata Sifat Favorit AI (Crucial)",
-                reason: "AI cenderung terlalu sering menggunakan kata 'krusial' menggantikan kata bahasa Indonesia yang lebih umum.",
-                weight: 10,
+                label: "Kosakata Favorit AI ('crucial')",
+                reason: "AI cenderung terlalu sering menggunakan kata serapan 'krusial' menggantikan kata bahasa Indonesia yang lebih alami.",
+                weight: 12,
                 replaces: {
-                    standar: ["penting", "utama", "penentu"],
+                    baku_alami: ["penting", "utama", "penentu"],
                     akademis: ["esensial", "fundamental", "strategis"],
-                    santai: ["penting banget", "utama", "kunci"],
+                    semiformal: ["sangat penting", "utama", "kunci"],
                     ringkas: ["penting", "utama", "pokok"]
                 }
             },
             {
                 regex: /\bmenggarisbawahi\b/gi,
-                label: "Kata Kerja Terjemahan (Underscore)",
-                reason: "Kata 'menggarisbawahi' dalam konteks abstrak merupakan terjemahan khas dari 'underscore/highlight'.",
+                label: "Kata Kerja Terjemahan ('underscore')",
+                reason: "Penggunaan 'menggarisbawahi' dalam makna kiasan merupakan terjemahan langsung dari kata bahasa Inggris 'underscore/highlight'.",
                 weight: 12,
                 replaces: {
-                    standar: ["menekankan", "menunjukkan", "memperjelas"],
+                    baku_alami: ["menekankan", "menunjukkan", "memperjelas"],
                     akademis: ["menegaskan", "mengindikasikan", "memperlihatkan"],
-                    santai: ["menunjukkan", "menekankan", "membuktikan"],
+                    semiformal: ["menunjukkan", "menekankan", "membuktikan"],
                     ringkas: ["menegaskan", "menunjukkan", "membuktikan"]
+                }
+            },
+            {
+                regex: /\b(dalam\s+)?lanskap\b/gi,
+                label: "Metafora Klise AI ('landscape')",
+                reason: "Kata 'lanskap' di luar konteks tata ruang/geografi merupakan terjemahan kaku dari metafora AI 'in the landscape of'.",
+                weight: 14,
+                replaces: {
+                    baku_alami: ["dalam dunia", "pada situasi", "dalam kondisi"],
+                    akademis: ["dalam ekosistem", "pada konstelasi", "dalam lingkungan"],
+                    semiformal: ["di dunia", "dalam suasana", "pada kondisi"],
+                    ringkas: ["dalam ranah", "di dunia", "pada situasi"]
+                }
+            },
+            {
+                regex: /\bpada akhirnya,\s*/gi,
+                label: "Transisi Penutup AI ('ultimately')",
+                reason: "Frasa 'Pada akhirnya,' di awal kalimat penutup sering merupakan terjemahan langsung dari 'Ultimately,' atau 'In conclusion,'.",
+                weight: 12,
+                replaces: {
+                    baku_alami: ["Hasilnya, ", "Dengan begitu, ", "Pada tahap akhir, "],
+                    akademis: ["Pada tahap akhir tindakan, ", "Secara kumulatif, ", "Sebagai capaian akhir, "],
+                    semiformal: ["Hasilnya, ", "Ujungnya, ", "Walhasil, "],
+                    ringkas: ["Hasilnya, ", "Akhirnya, ", "Simpulannya, "]
+                }
+            },
+            {
+                regex: /\bsecara keseluruhan,\s*/gi,
+                label: "Frasa Transisi AI ('overall')",
+                reason: "Frasa 'Secara keseluruhan,' di awal kalimat ringkasan merupakan pola terjemahan langsung dari 'Overall,'.",
+                weight: 12,
+                replaces: {
+                    baku_alami: ["Secara umum, ", "Dari seluruh rangkaian kegiatan, ", "Melihat seluruh hasil tersebut, "],
+                    akademis: ["Secara umum, ", "Berdasarkan keseluruhan data, ", "Ditinjau dari seluruh siklus, "],
+                    semiformal: ["Secara umum, ", "Kalau dilihat secara utuh, ", "Dari seluruh proses tadi, "],
+                    ringkas: ["Umumnya, ", "Secara umum, ", "Ringkasnya, "]
+                }
+            },
+            {
+                regex: /\bmenyelami(\s+lebih\s+dalam)?\b/gi,
+                label: "Kosakata Terjemahan AI ('delve')",
+                reason: "Kata 'menyelami' dalam konteks pembahasan teks merupakan terjemahan harfiah dari kata favorit AI 'delve into'.",
+                weight: 14,
+                replaces: {
+                    baku_alami: ["mengulas", "membahas", "memahami"],
+                    akademis: ["mengkaji", "menganalisis", "menelaah"],
+                    semiformal: ["membahas", "mengupas", "melihat"],
+                    ringkas: ["mengulas", "mengkaji", "membahas"]
                 }
             }
         ];
 
-        // Contoh Teks Abstrak PTK (Dari contoh pengguna)
-        const CONTOH_TEKS_PTK = `Latar belakang penelitian ini adalah rendahnya penguasaan kosakata dan keterampilan membaca siswa di SDN 15 Engkerangan. Hal ini disebabkan oleh keterbatasan penggunaan media pembelajaran yang interaktif, sehingga siswa cenderung bosan dan kesulitan memahami makna kata dalam bacaan. Penelitian ini bertujuan untuk meningkatkan penguasaan kosakata dan keterampilan membaca siswa melalui penerapan media permainan edukatif Teka-Teki Silang (TTS). Jenis penelitian yang digunakan adalah Penelitian Tindakan Kelas (PTK) yang dilaksanakan dalam dua siklus, di mana setiap siklus terdiri dari tahapan perencanaan, pelaksanaan, pengamatan, dan refleksi. Subjek penelitian ini adalah siswa kelas III SDN 15 Engkerangan yang berjumlah 15 siswa. Teknik pengumpulan data menggunakan tes (tes kosakata dan tes membaca pemahaman) serta non-tes (lembar observasi aktivitas siswa dan guru). Teknik analisis data dilakukan secara deskriptif perbandingan. Hasil penelitian menunjukkan adanya peningkatan yang signifikan pada hasil belajar siswa. Pada kondisi prasiklus, ketuntasan klasikal siswa hanya mencapai 26,67% (4 siswa). Setelah diterapkan media TTS, ketuntasan klasikal pada Siklus I meningkat menjadi 66,67% (10 siswa), dan mencapai ketuntasan klasikal penuh pada Siklus II sebesar 100% (15 siswa) dengan rata-rata nilai di atas Kriteria Ketercapaian Tujuan Pembelajaran (KKTP/KKM) yaitu 75. Berdasarkan hasil tersebut, dapat disimpulkan bahwa penggunaan media Teka-Teki Silang efektif dalam meningkatkan penguasaan kosakata dan keterampilan membaca siswa di sekolah dasar. Penelitian ini berimplikasi pada pentingnya kreativitas guru dalam mengintegrasikan media berbasis permainan untuk menciptakan pembelajaran bahasa yang bermakna.`;
+        // Contoh Teks Abstrak PTK (Menggabungkan pola AI serta beberapa contoh kata tidak baku/EYD agar fitur teruji penuh)
+        const CONTOH_TEKS_PTK = `Latar belakang penelitian ini adalah rendahnya penguasaan kosakata dan keterampilan membaca siswa disekolah SDN 15 Engkerangan. Hal ini disebabkan oleh keterbatasan penggunaan media pembelajaran yang interaktif, sehingga siswa cenderung bosan dan kesulitan memahami makna kata didalam bacaan. Penelitian ini bertujuan untuk meningkatkan penguasaan kosakata dan keterampilan membaca siswa melalui penerapan media permainan edukatif Teka-Teki Silang (TTS). Jenis penelitian yang digunakan adalah Penelitian Tindakan Kelas (PTK) yang dilaksanakan dalam dua siklus, di mana setiap siklus terdiri dari tahapan perencanaan, pelaksanaan, pengamatan, dan refleksi. Subyek penelitian ini adalah siswa kelas III SDN 15 Engkerangan yang berjumlah 15 siswa. Tehnik pengumpulan data menggunakan tes (tes kosakata dan tes membaca pemahaman) serta non-tes (lembar observasi aktifitas siswa dan guru). Tehnik analisa data dilakukan secara deskriptif perbandingan. Hasil penelitian menunjukkan adanya peningkatan yang signifikan pada hasil belajar siswa. Pada kondisi pra siklus, ketuntasan klasikal siswa hanya mencapai 26,67% (4 siswa). Setelah diterapkan media TTS, ketuntasan klasikal pada Siklus I meningkat menjadi 66,67% (10 siswa), dan mencapai ketuntasan klasikal penuh pada Siklus II sebesar 100% (15 siswa) dengan rata-rata nilai diatas Kriteria Ketercapaian Tujuan Pembelajaran (KKTP/KKM) yaitu 75. Berdasarkan hasil tersebut, dapat disimpulkan bahwa penggunaan media Teka-Teki Silang efektif dalam meningkatkan penguasaan kosakata dan keterampilan membaca siswa di sekolah dasar. Penelitian ini berimplikasi pada pentingnya kreatifitas guru dalam mengintegrasikan media berbasis permainan untuk menciptakan pembelajaran bahasa yang bermakna.`;
 
         /* ============================================================================
-         * 2. STATE & VARIABEL GLOBAL APLIKASI
+         * 4. STATE & VARIABEL GLOBAL APLIKASI
          * ============================================================================ */
-        let currentStyle = 'standar';
-        // Struktur sentencesData: [{ id, original, current, separator, isEdited, aiLevel, reasonLabel, reasonDesc, options: [] }]
+        let currentStyle = 'baku_alami';
         let sentencesData = [];
         let activeSentenceId = null;
         let initialAiScore = 0;
@@ -517,8 +701,11 @@
         const sourceTextarea = document.getElementById('sourceTextarea');
         const interactiveOutputContainer = document.getElementById('interactiveOutputContainer');
         const leftStats = document.getElementById('leftStats');
+        const initialEydBadge = document.getElementById('initialEydBadge');
         const initialScoreText = document.getElementById('initialScoreText');
         const initialScoreBar = document.getElementById('initialScoreBar');
+
+        const finalEydBadge = document.getElementById('finalEydBadge');
         const finalScoreBadge = document.getElementById('finalScoreBadge');
         const finalScoreVerdict = document.getElementById('finalScoreVerdict');
         const finalScoreBar = document.getElementById('finalScoreBar');
@@ -536,7 +723,7 @@
         const modeLabel = document.getElementById('modeLabel');
 
         /* ============================================================================
-         * 3. INISIALISASI & PENGATURAN API KEY (LOCALSTORAGE)
+         * 5. INISIALISASI & PENGATURAN API KEY (LOCALSTORAGE UNTUK GITHUB PAGES)
          * ============================================================================ */
         lucide.createIcons();
 
@@ -551,7 +738,7 @@
                 modeLabel.textContent = 'Mode Hybrid (Offline + Gemini)';
             } else {
                 modeDot.className = 'w-2 h-2 rounded-full bg-emerald-500';
-                modeLabel.textContent = 'Mode Offline (Lokal)';
+                modeLabel.textContent = 'Mode Offline (EYD V & KBBI)';
             }
         }
         updateApiModeIndicator();
@@ -596,7 +783,7 @@
         });
 
         /* ============================================================================
-         * 4. MESIN ANALISIS KALIMAT & DETEKSI SKOR AI (LOKAL / OFFLINE)
+         * 6. MESIN ANALISIS EYD V, KBBI & DETEKSI POLA AI (100% OFFLINE)
          * ============================================================================ */
         function escapeHtml(str) {
             const div = document.createElement('div');
@@ -604,10 +791,19 @@
             return div.innerHTML;
         }
 
-        // Memecah teks menjadi array kalimat dengan mempertahankan spasi/baris baru
+        function preserveCase(originalWord, targetWord) {
+            if (originalWord === originalWord.toUpperCase() && originalWord.length > 1) {
+                return targetWord.toUpperCase();
+            }
+            if (originalWord[0] === originalWord[0].toUpperCase()) {
+                return targetWord.charAt(0).toUpperCase() + targetWord.slice(1);
+            }
+            return targetWord;
+        }
+
+        // Memecah teks menjadi array kalimat dengan mempertahankan spasi dan baris baru
         function splitIntoSentences(text) {
             if (!text.trim()) return [];
-            // Cocokkan kalimat yang diakhiri tanda baca (. ! ?) atau akhir paragraf, beserta pemisah di belakangnya
             const regex = /([^.!?\n]+[.!?]+|[^.!?\n]+)(\s*)/g;
             const results = [];
             let match;
@@ -624,127 +820,204 @@
             return results;
         }
 
-        // Menganalisis satu kalimat dan membuat 3-4 opsi pengganti alami secara lokal
+        // Menerapkan perbaikan otomatis KBBI & EYD V pada sebuah kalimat
+        function applyKbbiAndEydFixes(sentenceText) {
+            let fixed = sentenceText;
+            let issues = [];
+
+            // 1. Cek Kamus Kata Tidak Baku KBBI
+            KAMUS_KBBI_TIDAK_BAKU.forEach(entry => {
+                if (entry.tidakBaku === entry.baku) return;
+                const wordRegex = new RegExp(`\\b${entry.tidakBaku}\\b`, 'gi');
+                if (wordRegex.test(fixed)) {
+                    issues.push({
+                        type: 'KBBI',
+                        badge: `KBBI: '${entry.tidakBaku}' → '${entry.baku}'`,
+                        detail: entry.catatan
+                    });
+                    fixed = fixed.replace(wordRegex, match => preserveCase(match, entry.baku));
+                }
+            });
+
+            // 2. Cek Aturan EYD V
+            ATURAN_EYD_V.forEach(rule => {
+                if (rule.regex.test(fixed)) {
+                    issues.push({
+                        type: 'EYD',
+                        badge: rule.label,
+                        detail: rule.reason
+                    });
+                    fixed = fixed.replace(rule.regex, (match, ...args) => {
+                        if (typeof rule.replacement === 'string' && rule.replacement.includes('$1')) {
+                            return match.replace(rule.regex, rule.replacement);
+                        }
+                        return preserveCase(match, rule.replacement);
+                    });
+                }
+                rule.regex.lastIndex = 0;
+            });
+
+            // 3. Cek Huruf Kapital di Awal Kalimat (EYD V)
+            if (/^[a-z]/.test(fixed.trim())) {
+                issues.push({
+                    type: 'EYD',
+                    badge: 'EYD V: Huruf Kapital Awal Kalimat',
+                    detail: 'Huruf pertama pada awal kalimat wajib ditulis menggunakan huruf kapital sesuai EYD V.'
+                });
+                fixed = fixed.replace(/^(\s*)([a-z])/, (_, sp, ch) => sp + ch.toUpperCase());
+            }
+
+            return { fixedText: fixed, eydKbbiIssues: issues };
+        }
+
+        // Menganalisis satu kalimat secara menyeluruh (KBBI + EYD V + Klise AI) dan menyiapkan 3-4 variasi
         function analyzeSingleSentenceOffline(sentenceText, style) {
             let totalWeight = 0;
-            let detectedLabels = [];
-            let detectedReasons = [];
+            let badges = [];
+            let descriptions = [];
             let generatedOptions = [];
 
-            // Cek kecocokan dengan KAMUS_KLISE_AI
-            KAMUS_KLISE_AI.forEach(rule => {
-                if (rule.regex.test(sentenceText)) {
-                    totalWeight += rule.weight;
-                    if (!detectedLabels.includes(rule.label)) detectedLabels.push(rule.label);
-                    if (!detectedReasons.includes(rule.reason)) detectedReasons.push(rule.reason);
+            // Langkah A: Periksa & perbaiki KBBI + EYD V terlebih dahulu sebagai fondasi
+            const { fixedText, eydKbbiIssues } = applyKbbiAndEydFixes(sentenceText);
+            eydKbbiIssues.forEach(iss => {
+                totalWeight += 10;
+                if (!badges.includes(iss.badge)) badges.push(iss.badge);
+                if (!descriptions.includes(iss.detail)) descriptions.push(iss.detail);
+            });
 
-                    const styleReplaces = rule.replaces[style] || rule.replaces.standar;
-                    styleReplaces.forEach((rep, rIdx) => {
-                        let replaced = sentenceText.replace(rule.regex, rep);
-                        // Kapitalisasi huruf pertama jika di awal kalimat
+            // Jika ada perbaikan KBBI/EYD V, jadikan perbaikan baku murni sebagai Opsi #1
+            if (fixedText !== sentenceText) {
+                generatedOptions.push({
+                    tag: "Perbaikan Baku EYD V & KBBI",
+                    text: fixedText
+                });
+            }
+
+            // Langkah B: Periksa Klise & Pola Terjemahan AI pada kalimat yang sudah dibakukan
+            let hasAiCliche = false;
+            KAMUS_KLISE_AI.forEach(rule => {
+                if (rule.regex.test(fixedText)) {
+                    hasAiCliche = true;
+                    totalWeight += rule.weight;
+                    if (!badges.includes(rule.label)) badges.push(rule.label);
+                    if (!descriptions.includes(rule.reason)) descriptions.push(rule.reason);
+
+                    const styleReplaces = rule.replaces[style] || rule.replaces.baku_alami;
+                    styleReplaces.forEach(rep => {
+                        let replaced = fixedText.replace(rule.regex, rep);
                         replaced = replaced.charAt(0).toUpperCase() + replaced.slice(1);
                         if (!generatedOptions.some(o => o.text === replaced) && replaced !== sentenceText) {
+                            const styleLabelMap = {
+                                baku_alami: "Baku Alami",
+                                akademis: "Akademis Jurnal",
+                                semiformal: "Semi-Formal Lugas",
+                                ringkas: "Ringkas Efektif"
+                            };
                             generatedOptions.push({
-                                tag: `Variasi ${generatedOptions.length + 1} (${style.toUpperCase()})`,
+                                tag: `EYD V + ${styleLabelMap[style]} (Variasi ${generatedOptions.length + 1})`,
                                 text: replaced
                             });
                         }
                     });
                 }
-                rule.regex.lastIndex = 0; // Reset regex state
+                rule.regex.lastIndex = 0;
             });
 
-            // Cek pola struktur pasif/panjang monoton (burstiness rendah)
-            const wordCount = sentenceText.trim().split(/\s+/).length;
-            if (wordCount >= 22 && totalWeight === 0) {
+            // Langkah C: Cek panjang kalimat & struktur pasif monoton
+            const wordCount = fixedText.trim().split(/\s+/).length;
+            if (wordCount >= 22 && !hasAiCliche && eydKbbiIssues.length === 0) {
                 totalWeight += 10;
-                detectedLabels.push("Kalimat Terlalu Panjang");
-                detectedReasons.push("Kalimat panjang lebih dari 20 kata dengan struktur lurus cenderung meningkatkan skor deteksi AI.");
+                badges.push("Kalimat Terlalu Panjang (EYD Efektif)");
+                descriptions.push("Kalimat melebihi 20 kata dengan ritme datar cenderung meningkatkan skor AI dan mengurangi keefektifan kalimat.");
             }
 
-            // Tambahkan opsi pemecahan / penyederhanaan kalimat umum agar selalu tersedia minimal 3 opsi
-            const fallbackVariations = buildContextualFallbackOptions(sentenceText, style);
-            fallbackVariations.forEach(opt => {
+            // Langkah D: Tambahkan variasi struktur kalimat alami agar selalu tersedia 3-4 opsi
+            const contextualOpts = buildContextualFallbackOptions(fixedText, style);
+            contextualOpts.forEach(opt => {
                 if (generatedOptions.length < 4 && !generatedOptions.some(o => o.text === opt.text) && opt.text !== sentenceText) {
                     generatedOptions.push(opt);
                 }
             });
 
             let aiLevel = 'clean';
-            if (totalWeight >= 15) aiLevel = 'high';
+            if (totalWeight >= 14 || eydKbbiIssues.length > 0) aiLevel = 'high';
             else if (totalWeight > 0) aiLevel = 'medium';
 
             return {
                 weight: totalWeight,
+                eydKbbiCount: eydKbbiIssues.length,
                 aiLevel,
-                reasonLabel: detectedLabels[0] || "Kalimat Cukup Alami",
-                reasonDesc: detectedReasons.join(" ") || "Kalimat ini sudah cukup alami, namun Anda tetap bisa memilih variasi gaya bahasa di bawah.",
+                reasonBadges: badges.length > 0 ? badges : ["Sesuai EYD V & Alami"],
+                reasonDesc: descriptions.join(" ") || "Kalimat ini sudah mematuhi kaidah EYD V dan KBBI. Anda tetap dapat memilih variasi gaya bahasa di bawah.",
                 options: generatedOptions.slice(0, 4)
             };
         }
 
-        // Membuat variasi struktur kalimat tambahan berdasarkan gaya bahasa yang dipilih
+        // Membuat variasi kalimat efektif sesuai EYD V & gaya bahasa terpilih
         function buildContextualFallbackOptions(sentence, style) {
             const opts = [];
             let s = sentence.trim();
 
-            // Transformasi 1: Ubah pasif/formal menjadi lebih aktif & langsung
+            // Variasi 1: Kalimat aktif & lugas (Kalimat Efektif EYD V)
             let v1 = s
-                .replace(/^Jenis penelitian yang digunakan adalah\s+/i, "Penelitian ini menerapkan metode ")
+                .replace(/^Jenis penelitian yang digunakan adalah\s+/i, "Penelitian ini menggunakan metode ")
                 .replace(/^Subjek penelitian ini adalah\s+/i, "Penelitian ini melibatkan ")
                 .replace(/^Teknik pengumpulan data menggunakan\s+/i, "Data dikumpulkan melalui ")
-                .replace(/^Teknik analisis data dilakukan secara\s+/i, "Data yang terkumpul dianalisis menggunakan pendekatan ")
+                .replace(/^Teknik analisis data dilakukan secara\s+/i, "Data yang terkumpul dianalisis secara ")
                 .replace(/^Pada kondisi prasiklus,\s*/i, "Sebelum tindakan diberikan (prasiklus), ")
                 .replace(/^Setelah diterapkan media TTS,\s*/i, "Usai penerapan media TTS, ")
                 .replace(/\byang berjumlah\b/gi, "sebanyak")
-                .replace(/\bbertujuan untuk meningkatkan\b/gi, "berupaya mendongkrak")
-                .replace(/\bmelalui penerapan\b/gi, "lewat pemanfaatan");
+                .replace(/\bbertujuan untuk meningkatkan\b/gi, "bertujuan meningkatkan")
+                .replace(/\bmelalui penerapan\b/gi, "melalui pemanfaatan");
 
             if (v1 !== s) {
-                opts.push({ tag: "Struktur Aktif & Lugas", text: v1 });
+                opts.push({ tag: "Kalimat Efektif EYD V (Aktif & Lugas)", text: v1 });
             }
 
-            // Transformasi 2: Penyesuaian gaya Santai vs Akademis vs Ringkas
-            if (style === 'santai') {
-                let vSantai = s
-                    .replace(/\bbertujuan untuk\b/gi, "ditujukan buat")
+            // Variasi 2: Penyesuaian spesifik 4 gaya bahasa (tetap baku KBBI)
+            if (style === 'semiformal') {
+                let vSemi = s
+                    .replace(/\bbertujuan untuk\b/gi, "ditujukan untuk")
                     .replace(/\bmemahami makna kata dalam bacaan\b/gi, "menangkap arti kata saat membaca")
                     .replace(/\bmencapai ketuntasan klasikal penuh\b/gi, "tuntas seluruhnya")
-                    .replace(/\befektif dalam meningkatkan\b/gi, "ampuh mendongkrak");
-                if (vSantai !== s) opts.push({ tag: "Gaya Santai & Mengalir", text: vSantai });
+                    .replace(/\befektif dalam meningkatkan\b/gi, "terbukti efektif meningkatkan");
+                if (vSemi !== s) opts.push({ tag: "Semi-Formal & Lugas", text: vSemi });
             } else if (style === 'akademis') {
                 let vAkademis = s
                     .replace(/\bcenderung bosan dan kesulitan\b/gi, "mengalami kejenuhan serta hambatan dalam")
                     .replace(/\bdeskriptif perbandingan\b/gi, "deskriptif komparatif")
                     .replace(/\befektif dalam meningkatkan\b/gi, "terbukti efektif mengoptimalkan");
-                if (vAkademis !== s) opts.push({ tag: "Gaya Akademis Jurnal", text: vAkademis });
+                if (vAkademis !== s) opts.push({ tag: "Akademis & Jurnal (Skripsi/PTK)", text: vAkademis });
             } else if (style === 'ringkas') {
                 let vRingkas = s
                     .replace(/\bmedia permainan edukatif Teka-Teki Silang \(TTS\)\b/gi, "media Teka-Teki Silang (TTS)")
                     .replace(/\bKriteria Ketercapaian Tujuan Pembelajaran \(KKTP\/KKM\)\b/gi, "KKTP/KKM")
                     .replace(/\bsiswa di sekolah dasar\b/gi, "siswa SD");
-                if (vRingkas !== s) opts.push({ tag: "Versi Ringkas", text: vRingkas });
+                if (vRingkas !== s) opts.push({ tag: "Ringkas & Efektif (EYD)", text: vRingkas });
             }
 
-            // Transformasi 3: Pemecahan kalimat majemuk bertingkat dengan ", sehingga " atau ", dan "
+            // Variasi 3: Pemecahan kalimat majemuk panjang agar ritme kalimat bervariasi (Burstiness)
             if (s.includes(", sehingga ")) {
                 const parts = s.split(", sehingga ");
                 const splitSentence = `${parts[0]}. Akibatnya, ${parts[1]}`;
-                opts.push({ tag: "Pecah Jadi 2 Kalimat Pendek", text: splitSentence });
+                opts.push({ tag: "Pecah Kalimat Efektif (EYD V)", text: splitSentence });
             } else if (s.includes(", dan mencapai ")) {
                 const parts = s.split(", dan mencapai ");
-                const splitSentence = `${parts[0]}. Capaian ini terus menanjak hingga menyentuh ${parts[1]}`;
-                opts.push({ tag: "Variasi Ritme (Burstiness)", text: splitSentence });
+                const splitSentence = `${parts[0]}. Capaian tersebut terus meningkat hingga menyentuh ${parts[1]}`;
+                opts.push({ tag: "Variasi Ritme Kalimat Manusiawi", text: splitSentence });
             }
 
             return opts;
         }
 
-        // Menghitung skor AI keseluruhan teks (0 - 100%)
-        function computeOverallAiScore(sentencesObjList) {
-            if (!sentencesObjList || sentencesObjList.length === 0) return 0;
+        // Menghitung skor AI keseluruhan & jumlah pelanggaran EYD/KBBI yang tersisa
+        function computeOverallMetrics(sentencesObjList) {
+            if (!sentencesObjList || sentencesObjList.length === 0) {
+                return { aiScore: 0, eydKbbiTotal: 0 };
+            }
 
             let totalWeight = 0;
+            let eydKbbiTotal = 0;
             let lengths = [];
 
             sentencesObjList.forEach(item => {
@@ -752,8 +1025,12 @@
                 const words = textToCheck.trim().split(/\s+/).length;
                 lengths.push(words);
 
-                // Jika kalimat sudah diedit oleh pengguna, bobot AI-nya turun drastis
-                if (item.isEdited) {
+                // Hitung pelanggaran KBBI & EYD V aktual pada teks saat ini
+                const { eydKbbiIssues } = applyKbbiAndEydFixes(textToCheck);
+                eydKbbiTotal += eydKbbiIssues.length;
+                totalWeight += eydKbbiIssues.length * 10;
+
+                if (item.isEdited && eydKbbiIssues.length === 0) {
                     totalWeight += 2;
                 } else {
                     KAMUS_KLISE_AI.forEach(rule => {
@@ -771,22 +1048,23 @@
                 const mean = lengths.reduce((a, b) => a + b, 0) / lengths.length;
                 const variance = lengths.reduce((sum, l) => sum + Math.pow(l - mean, 2), 0) / lengths.length;
                 const stdDev = Math.sqrt(variance);
-                if (stdDev < 5.5 && mean > 13) uniformityScore = 16;
-                else if (stdDev < 7.5 && mean > 12) uniformityScore = 8;
+                if (stdDev < 5.5 && mean > 13) uniformityScore = 15;
+                else if (stdDev < 7.5 && mean > 12) uniformityScore = 7;
             }
 
-            const raw = Math.round((totalWeight / Math.max(1, sentencesObjList.length * 0.65)) + uniformityScore);
-            return Math.min(96, Math.max(6, raw));
+            const rawAi = Math.round((totalWeight / Math.max(1, sentencesObjList.length * 0.65)) + uniformityScore);
+            const aiScore = Math.min(96, Math.max(5, rawAi));
+
+            return { aiScore, eydKbbiTotal };
         }
 
         /* ============================================================================
-         * 5. RENDER TAMPILAN INTERAKTIF & DRAWER PILIHAN KALIMAT
+         * 7. RENDER TAMPILAN INTERAKTIF & LACI SARAN KALIMAT
          * ============================================================================ */
         function processSourceText(keepExistingEdits = false) {
             const rawText = sourceTextarea.value;
             const trimmed = rawText.trim();
 
-            // Update statistik panel kiri
             const wordCount = trimmed ? trimmed.split(/\s+/).length : 0;
             const rawSentences = splitIntoSentences(rawText);
             leftStats.textContent = `${wordCount} kata • ${rawSentences.length} kalimat`;
@@ -798,16 +1076,15 @@
                 interactiveOutputContainer.innerHTML = `
                     <div class="h-full flex flex-col items-center justify-center text-center text-slate-400 py-10">
                         <i data-lucide="mouse-pointer-click" class="w-8 h-8 mb-2 text-slate-300"></i>
-                        <p class="text-xs sm:text-sm font-medium text-slate-500">Hasil analisis interaktif akan muncul di sini.</p>
-                        <p class="text-xs text-slate-400 mt-1">Klik kalimat mana saja untuk mengganti frasa atau memperhalus struktur kalimatnya.</p>
+                        <p class="text-xs sm:text-sm font-medium text-slate-500">Hasil penyuntingan interaktif EYD V &amp; KBBI akan muncul di sini.</p>
+                        <p class="text-xs text-slate-400 mt-1">Klik kalimat mana pun untuk melihat diagnosis ejaan, kata baku KBBI, dan 3–4 opsi kalimat alami.</p>
                     </div>
                 `;
                 lucide.createIcons();
-                updateScoreMeters(0, 0);
+                updateAllMeters({ aiScore: 0, eydKbbiTotal: 0 }, { aiScore: 0, eydKbbiTotal: 0 });
                 return;
             }
 
-            // Bangun ulang data kalimat
             sentencesData = rawSentences.map((sObj, idx) => {
                 const existing = keepExistingEdits && sentencesData[idx] && sentencesData[idx].original === sObj.text
                     ? sentencesData[idx]
@@ -822,16 +1099,17 @@
                     separator: sObj.separator,
                     isEdited: existing ? existing.isEdited : false,
                     aiLevel: analysis.aiLevel,
-                    reasonLabel: analysis.reasonLabel,
+                    reasonBadges: analysis.reasonBadges,
                     reasonDesc: analysis.reasonDesc,
                     options: analysis.options
                 };
             });
 
-            initialAiScore = computeOverallAiScore(sentencesData.map(s => ({ current: s.original, isEdited: false })));
-            const currentAiScore = computeOverallAiScore(sentencesData);
+            const initialMetrics = computeOverallMetrics(sentencesData.map(s => ({ current: s.original, isEdited: false })));
+            initialAiScore = initialMetrics.aiScore;
+            const currentMetrics = computeOverallMetrics(sentencesData);
 
-            updateScoreMeters(initialAiScore, currentAiScore);
+            updateAllMeters(initialMetrics, currentMetrics);
             renderInteractiveSentences();
 
             if (activeSentenceId !== null && sentencesData[activeSentenceId]) {
@@ -841,37 +1119,54 @@
             }
         }
 
-        function updateScoreMeters(initScore, currScore) {
-            // Meter Panel Kiri
-            initialScoreText.textContent = `${initScore}%`;
-            initialScoreBar.style.width = `${initScore}%`;
+        function updateAllMeters(initMetrics, currMetrics) {
+            // Panel Kiri
+            initialScoreText.textContent = `${initMetrics.aiScore}%`;
+            initialScoreBar.style.width = `${initMetrics.aiScore}%`;
             initialScoreBar.className = `h-full transition-all duration-300 ${
-                initScore >= 60 ? 'bg-rose-500' : initScore >= 35 ? 'bg-amber-500' : 'bg-emerald-500'
+                initMetrics.aiScore >= 60 ? 'bg-rose-500' : initMetrics.aiScore >= 35 ? 'bg-amber-500' : 'bg-emerald-500'
             }`;
 
-            // Meter Panel Kanan
+            initialEydBadge.textContent = `${initMetrics.eydKbbiTotal} temuan KBBI / EYD V`;
+            initialEydBadge.className = initMetrics.eydKbbiTotal > 0
+                ? 'px-2 py-0.5 rounded-md text-[11px] font-semibold bg-rose-100 text-rose-800'
+                : 'px-2 py-0.5 rounded-md text-[11px] font-semibold bg-emerald-100 text-emerald-800';
+
+            // Panel Kanan
             if (sentencesData.length === 0) {
                 finalScoreBadge.textContent = '0%';
                 finalScoreBadge.className = 'px-2.5 py-0.5 rounded-full font-bold bg-slate-200 text-slate-700';
                 finalScoreVerdict.textContent = 'Menunggu teks';
                 finalScoreBar.style.width = '0%';
+                finalEydBadge.textContent = 'Menunggu teks';
+                finalEydBadge.className = 'px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-slate-200 text-slate-700';
                 return;
             }
 
-            finalScoreBadge.textContent = `${currScore}%`;
-            finalScoreBar.style.width = `${currScore}%`;
+            // Status Kepatuhan EYD V & KBBI
+            if (currMetrics.eydKbbiTotal === 0) {
+                finalEydBadge.textContent = '100% Patuh EYD V & KBBI';
+                finalEydBadge.className = 'px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800';
+            } else {
+                finalEydBadge.textContent = `Tersisa ${currMetrics.eydKbbiTotal} ejaan/kata tidak baku`;
+                finalEydBadge.className = 'px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-100 text-amber-800';
+            }
 
-            if (currScore <= 25) {
+            // Skor Deteksi AI
+            finalScoreBadge.textContent = `${currMetrics.aiScore}%`;
+            finalScoreBar.style.width = `${currMetrics.aiScore}%`;
+
+            if (currMetrics.aiScore <= 25 && currMetrics.eydKbbiTotal === 0) {
                 finalScoreBadge.className = 'px-2.5 py-0.5 rounded-full font-bold bg-emerald-100 text-emerald-800';
-                finalScoreVerdict.textContent = 'Sangat Alami (Lolos Deteksi AI)';
+                finalScoreVerdict.textContent = 'Bahasa Manusiawi & Baku (Lolos Deteksi AI)';
                 finalScoreBar.className = 'h-full bg-emerald-500 transition-all duration-300';
-            } else if (currScore <= 48) {
+            } else if (currMetrics.aiScore <= 48) {
                 finalScoreBadge.className = 'px-2.5 py-0.5 rounded-full font-bold bg-amber-100 text-amber-800';
-                finalScoreVerdict.textContent = 'Cukup Alami (Klik kalimat kuning/merah)';
+                finalScoreVerdict.textContent = 'Cukup Alami (Klik kalimat sorotan untuk sempurnakan)';
                 finalScoreBar.className = 'h-full bg-amber-500 transition-all duration-300';
             } else {
                 finalScoreBadge.className = 'px-2.5 py-0.5 rounded-full font-bold bg-rose-100 text-rose-800';
-                finalScoreVerdict.textContent = 'Terindikasi AI (Perlu Suntingan)';
+                finalScoreVerdict.textContent = 'Terindikasi Pola AI / Tidak Baku';
                 finalScoreBar.className = 'h-full bg-rose-500 transition-all duration-300';
             }
         }
@@ -897,8 +1192,8 @@
                 span.className = `sentence-node ${stateClass}`;
                 span.textContent = item.current;
                 span.title = item.isEdited
-                    ? 'Kalimat sudah diperbaiki (Klik untuk ubah lagi)'
-                    : `${item.reasonLabel} — Klik untuk melihat saran pengganti`;
+                    ? 'Kalimat sudah disunting sesuai EYD V & KBBI (Klik untuk ubah)'
+                    : `${item.reasonBadges.join(' | ')} — Klik untuk melihat saran pengganti`;
 
                 span.addEventListener('click', () => {
                     activeSentenceId = item.id;
@@ -908,7 +1203,6 @@
 
                 interactiveOutputContainer.appendChild(span);
 
-                // Pertahankan spasi atau baris baru antar kalimat
                 if (item.separator) {
                     if (item.separator.includes('\n')) {
                         const brCount = (item.separator.match(/\n/g) || []).length;
@@ -922,14 +1216,15 @@
             });
         }
 
-        // Membuka laci pilihan opsi pengganti saat kalimat di Panel Kanan diklik
         function openSentenceDrawer(sentenceId) {
             const item = sentencesData[sentenceId];
             if (!item) return;
 
             sentenceEditorDrawer.classList.remove('hidden');
             drawerSentenceIndex.textContent = `Kalimat #${sentenceId + 1}`;
-            drawerReasonBadge.textContent = item.isEdited ? 'Sudah Disunting' : item.reasonLabel;
+            drawerReasonBadge.textContent = item.isEdited
+                ? 'Sudah Disunting (EYD V & KBBI)'
+                : item.reasonBadges.slice(0, 2).join(' • ');
             drawerReasonBadge.className = item.isEdited
                 ? 'px-2 py-0.5 rounded-md text-[11px] font-semibold bg-emerald-100 text-emerald-800 border border-emerald-300'
                 : 'px-2 py-0.5 rounded-md text-[11px] font-semibold bg-amber-100 text-amber-900 border border-amber-300';
@@ -938,7 +1233,7 @@
 
             drawerOptionsList.innerHTML = '';
 
-            // Opsi 0: Kembalikan ke kalimat asli jika sudah diedit
+            // Opsi Pulihkan ke kalimat asli jika sudah disunting
             if (item.isEdited && item.current !== item.original) {
                 const origBtn = document.createElement('button');
                 origBtn.type = 'button';
@@ -958,11 +1253,11 @@
                 drawerOptionsList.appendChild(origBtn);
             }
 
-            // Render opsi pengganti
+            // Render 3-4 opsi pengganti sesuai EYD V & KBBI
             if (item.options.length === 0) {
                 drawerOptionsList.innerHTML += `
                     <div class="p-3 rounded-xl bg-white border border-slate-200 text-xs text-slate-500">
-                        Tidak ada aturan klise khusus pada kalimat ini. Anda dapat mengeditnya secara manual di kotak bawah atau menggunakan tombol <strong>Parafrase Cerdas Gemini</strong>.
+                        Kalimat ini sudah memenuhi kaidah EYD V &amp; KBBI. Anda dapat menyuntingnya secara manual di bawah atau menekan tombol <strong>Tulis Ulang Cerdas (AI + EYD)</strong>.
                     </div>
                 `;
             } else {
@@ -997,8 +1292,9 @@
         }
 
         function refreshAfterSentenceChange() {
-            const currentScore = computeOverallAiScore(sentencesData);
-            updateScoreMeters(initialAiScore, currentScore);
+            const initMetrics = computeOverallMetrics(sentencesData.map(s => ({ current: s.original, isEdited: false })));
+            const currMetrics = computeOverallMetrics(sentencesData);
+            updateAllMeters(initMetrics, currMetrics);
             renderInteractiveSentences();
             if (activeSentenceId !== null) {
                 openSentenceDrawer(activeSentenceId);
@@ -1006,11 +1302,11 @@
         }
 
         /* ============================================================================
-         * 6. EVENT LISTENER TOMBOL & INTERAKSI PENGGUNA
+         * 8. EVENT LISTENER TOMBOL & INTERAKSI PENGGUNA
          * ============================================================================ */
         sourceTextarea.addEventListener('input', () => processSourceText(false));
 
-        // Tab Pilihan Gaya Bahasa
+        // Tab 4 Pilihan Gaya Bahasa (EYD V & KBBI)
         document.querySelectorAll('.style-tab').forEach(tab => {
             tab.addEventListener('click', () => {
                 document.querySelectorAll('.style-tab').forEach(t => {
@@ -1049,7 +1345,7 @@
             }
         });
 
-        // Hapus Teks
+        // Bersihkan Teks
         document.getElementById('btnClear').addEventListener('click', () => {
             sourceTextarea.value = '';
             processSourceText(false);
@@ -1070,25 +1366,29 @@
             sentencesData[activeSentenceId].current = newText;
             sentencesData[activeSentenceId].isEdited = newText !== sentencesData[activeSentenceId].original;
             refreshAfterSentenceChange();
-            showToast('Perubahan kalimat diterapkan!');
+            showToast('Suntingan kalimat diterapkan!');
         });
 
-        // Humanize Otomatis (100% Offline - Menerapkan Opsi #1 ke Semua Kalimat Terindikasi AI)
+        // Perbaiki Otomatis (100% Offline EYD & KBBI)
         document.getElementById('btnAutoHumanizeOffline').addEventListener('click', () => {
             if (sentencesData.length === 0) {
-                showToast('Masukkan teks terlebih dahulu di panel kiri.', true);
+                showToast('Masukkan naskah terlebih dahulu di panel kiri.', true);
                 return;
             }
             let changedCount = 0;
             sentencesData.forEach(item => {
-                if ((item.aiLevel === 'high' || item.aiLevel === 'medium') && item.options.length > 0) {
-                    item.current = item.options[0].text;
-                    item.isEdited = true;
-                    changedCount++;
+                // Pilih opsi pengganti alami terbaik (jika ada variasi klise AI + EYD, pilih opsi terakhir yang paling alami)
+                if (item.options.length > 0) {
+                    const bestOption = item.options.length > 1 ? item.options[1] : item.options[0];
+                    if (bestOption.text !== item.current) {
+                        item.current = bestOption.text;
+                        item.isEdited = true;
+                        changedCount++;
+                    }
                 }
             });
             refreshAfterSentenceChange();
-            showToast(`${changedCount} kalimat berpola AI otomatis diperhalus (Mode Offline)!`);
+            showToast(`${changedCount} kalimat disempurnakan sesuai EYD V & KBBI (Mode Offline)!`);
         });
 
         // Reset Semua ke Teks Awal
@@ -1102,7 +1402,6 @@
             showToast('Semua kalimat dikembalikan ke teks asli.');
         });
 
-        // Menggabungkan seluruh kalimat hasil suntingan menjadi teks utuh
         function getFinalCombinedText() {
             return sentencesData.map(item => item.current + item.separator).join('');
         }
@@ -1120,7 +1419,7 @@
             tempArea.select();
             document.execCommand('copy');
             document.body.removeChild(tempArea);
-            showToast('Hasil suntingan berhasil disalin!');
+            showToast('Hasil suntingan EYD V & KBBI berhasil disalin!');
         });
 
         // Unduh sebagai file .TXT
@@ -1134,18 +1433,18 @@
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'hasil-humanizer-bahasa.txt';
+            a.download = 'hasil-suntingan-eyd-kbbi.txt';
             a.click();
             URL.revokeObjectURL(url);
-            showToast('File hasil-humanizer-bahasa.txt diunduh!');
+            showToast('File hasil-suntingan-eyd-kbbi.txt diunduh!');
         });
 
         /* ============================================================================
-         * 7. INTEGRASI OPSIONAL: PARAFRASE CERDAS DENGAN GEMINI API
+         * 9. INTEGRASI OPSIONAL: TULIS ULANG CERDAS (GEMINI API + EYD V & KBBI)
          * ============================================================================ */
         document.getElementById('btnGeminiSmart').addEventListener('click', async () => {
             if (sentencesData.length === 0) {
-                showToast('Masukkan teks terlebih dahulu di panel kiri.', true);
+                showToast('Masukkan naskah terlebih dahulu di panel kiri.', true);
                 return;
             }
 
@@ -1159,21 +1458,22 @@
             const btn = document.getElementById('btnGeminiSmart');
             const originalHtml = btn.innerHTML;
             btn.disabled = true;
-            btn.innerHTML = `<i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin"></i><span>Menganalisis...</span>`;
+            btn.innerHTML = `<i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin"></i><span>Menyunting...</span>`;
             lucide.createIcons();
 
             const stylePromptMap = {
-                standar: "Bahasa Indonesia baku namun alami, mengalir, tidak kaku.",
-                akademis: "Bahasa Indonesia akademis standar jurnal ilmiah (PUEBI) yang lugas, jernih, tanpa klise terjemahan.",
-                santai: "Bahasa Indonesia santai, komunikatif, akrab, seperti tulisan blog populer.",
-                ringkas: "Bahasa Indonesia padat, langsung ke inti (to-the-point), kalimat efisien."
+                baku_alami: "Bahasa Indonesia baku sesuai EYD V dan KBBI namun mengalir alami seperti tulisan penutur asli (tidak kaku seperti terjemahan).",
+                akademis: "Bahasa Indonesia akademis standar jurnal ilmiah/skripsi/PTK sesuai PUEBI/EYD V dan KBBI, lugas, objektif, bebas klise terjemahan.",
+                semiformal: "Bahasa Indonesia semi-formal untuk artikel populer/blog edukasi yang komunikatif, tetap menggunakan kata baku KBBI dan ejaan EYD V.",
+                ringkas: "Kalimat efektif sesuai EYD V: padat, hemat kata, langsung ke inti informasi, baku sesuai KBBI."
             };
 
             const sentenceListPayload = sentencesData.map(s => ({ id: s.id, text: s.original }));
-            const systemInstruction = `Anda adalah editor senior penutur asli Bahasa Indonesia dan ahli anti-deteksi AI (humanizer).
-Untuk setiap kalimat dalam daftar JSON yang diberikan:
-1. Evaluasi apakah kalimat tersebut terdengar seperti tulisan AI (klise terjemahan, struktur repetitif, terlalu panjang/monoton).
-2. Berikan 3 opsi variasi parafrase dalam gaya: ${stylePromptMap[currentStyle]}. Variasikan panjang kalimat (burstiness tinggi) agar tidak terdeteksi detektor AI tanpa mengubah fakta/angka/data asli.`;
+            const systemInstruction = `Anda adalah editor bahasa senior Badan Bahasa (ahli EYD V dan KBBI) sekaligus spesialis anti-deteksi AI (humanizer).
+Tugas Anda untuk setiap kalimat dalam daftar JSON:
+1. Perbaiki seluruh kata tidak baku menjadi kata baku sesuai KBBI (misalnya: analisa -> analisis, praktek -> praktik, merubah -> mengubah, aktifitas -> aktivitas, subyek -> subjek, tehnik -> teknik).
+2. Perbaiki seluruh ejaan sesuai kaidah EYD V (pemisahan kata depan 'di/ke' tempat seperti 'di dalam', 'di sekolah', 'di atas', tanda koma sebelum 'sedangkan/melainkan', serta penghapusan kata hubung terjemahan 'di mana').
+3. Sajikan 3 opsi variasi kalimat yang mengalir alami seperti ditulis manusia dengan ritme kalimat bervariasi (burstiness tinggi) dalam gaya: ${stylePromptMap[currentStyle]}. Jangan mengubah angka, data, atau fakta asli.`;
 
             try {
                 const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(apiKey)}`, {
@@ -1181,7 +1481,7 @@ Untuk setiap kalimat dalam daftar JSON yang diberikan:
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         contents: [{
-                            parts: [{ text: `Buatkan 3 opsi variasi pengganti alami untuk setiap kalimat berikut:\n${JSON.stringify(sentenceListPayload)}` }]
+                            parts: [{ text: `Sunting dan buatkan 3 opsi variasi alami sesuai EYD V & KBBI untuk setiap kalimat berikut:\n${JSON.stringify(sentenceListPayload)}` }]
                         }],
                         systemInstruction: { parts: [{ text: systemInstruction }] },
                         generationConfig: {
@@ -1196,7 +1496,10 @@ Untuk setiap kalimat dalam daftar JSON yang diberikan:
                                             properties: {
                                                 id: { type: "INTEGER" },
                                                 aiLevel: { type: "STRING", enum: ["high", "medium", "clean"] },
-                                                reasonLabel: { type: "STRING" },
+                                                reasonBadges: {
+                                                    type: "ARRAY",
+                                                    items: { type: "STRING" }
+                                                },
                                                 reasonDesc: { type: "STRING" },
                                                 options: {
                                                     type: "ARRAY",
@@ -1210,7 +1513,7 @@ Untuk setiap kalimat dalam daftar JSON yang diberikan:
                                                     }
                                                 }
                                             },
-                                            required: ["id", "aiLevel", "reasonLabel", "reasonDesc", "options"]
+                                            required: ["id", "aiLevel", "reasonBadges", "reasonDesc", "options"]
                                         }
                                     }
                                 },
@@ -1232,11 +1535,12 @@ Untuk setiap kalimat dalam daftar JSON yang diberikan:
                     parsed.results.forEach(res => {
                         if (sentencesData[res.id]) {
                             sentencesData[res.id].aiLevel = res.aiLevel || 'medium';
-                            sentencesData[res.id].reasonLabel = res.reasonLabel || 'Saran Gemini AI';
+                            sentencesData[res.id].reasonBadges = Array.isArray(res.reasonBadges) && res.reasonBadges.length > 0
+                                ? res.reasonBadges
+                                : ['Saran Gemini (EYD V & KBBI)'];
                             sentencesData[res.id].reasonDesc = res.reasonDesc || '';
                             if (Array.isArray(res.options) && res.options.length > 0) {
                                 sentencesData[res.id].options = res.options;
-                                // Terapkan otomatis opsi #1 jika kalimat memang terindikasi AI
                                 if (res.aiLevel === 'high' || res.aiLevel === 'medium') {
                                     sentencesData[res.id].current = res.options[0].text;
                                     sentencesData[res.id].isEdited = true;
@@ -1247,7 +1551,7 @@ Untuk setiap kalimat dalam daftar JSON yang diberikan:
                 }
 
                 refreshAfterSentenceChange();
-                showToast('Parafrase Cerdas Gemini selesai! Klik kalimat mana saja untuk memilih variasi lain.');
+                showToast('Penyuntingan cerdas sesuai EYD V & KBBI selesai!');
             } catch (err) {
                 showToast('Gagal terhubung ke Gemini API. Periksa API Key Anda atau gunakan Mode Offline.', true);
             } finally {
