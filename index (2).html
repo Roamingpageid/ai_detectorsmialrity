@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Korektor Kosakata & Gaya Bahasa AI (Bahasa Indonesia)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
+        }
+        h1, h2, h3, .font-display {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        /* Custom scrollbar untuk kenyamanan membaca */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        .highlight-cliche {
+            background-color: #fef08a;
+            color: #854d0e;
+            padding: 1px 4px;
+            border-radius: 4px;
+            font-weight: 500;
+            border-bottom: 2px solid #eab308;
+            cursor: help;
+        }
+        .option-card {
+            transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Navbar -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="bg-indigo-600 text-white p-2 rounded-xl shadow-sm">
+                    <i data-lucide="sparkles" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold text-slate-900 leading-tight">Penyunting Bahasa AI</h1>
+                    <p class="text-xs text-slate-500 hidden sm:block">Ubah teks terjemahan kaku & klise AI menjadi Bahasa Indonesia yang alami</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <button id="btnSample" type="button" class="inline-flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-medium text-indigo-700 bg-indigo-50 hover:bg-indigo-100 rounded-xl transition-colors">
+                    <i data-lucide="file-text" class="w-4 h-4"></i>
+                    <span>Muat Contoh Teks AI</span>
+                </button>
+                <button id="btnClear" type="button" class="inline-flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-colors" title="Bersihkan Teks">
+                    <i data-lucide="trash-2" class="w-4 h-4"></i>
+                    <span class="hidden sm:inline">Bersihkan</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        
+        <!-- Notification Toast -->
+        <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+            <div class="bg-slate-900 text-white px-4 py-3 rounded-xl shadow-lg flex items-center gap-2.5 text-sm font-medium">
+                <i id="toastIcon" data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i>
+                <span id="toastMessage">Berhasil disalin ke papan klip!</span>
+            </div>
+        </div>
+
+        <!-- Control Bar: Pilihan Gaya Bahasa -->
+        <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm mb-6">
+            <div class="flex flex-col xl:flex-row xl:items-center justify-between gap-4">
+                <div class="flex-1">
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2.5">
+                        1. Pilih Gaya Bahasa Target (Memengaruhi Variasi & Ritme Kalimat)
+                    </label>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5" id="toneSelector">
+                        <button type="button" data-tone="santai" class="tone-btn active flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl border-2 border-indigo-600 bg-indigo-50/70 text-indigo-900 text-left transition-all">
+                            <i data-lucide="coffee" class="w-4 h-4 text-indigo-600 shrink-0"></i>
+                            <div>
+                                <div class="text-xs sm:text-sm font-semibold">Santai & Mengalir</div>
+                                <div class="text-[11px] text-indigo-700/80">Akrab, natural, seperti obrolan</div>
+                            </div>
+                        </button>
+                        <button type="button" data-tone="profesional" class="tone-btn flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl border border-slate-200 hover:border-slate-300 bg-white text-slate-700 text-left transition-all">
+                            <i data-lucide="briefcase" class="w-4 h-4 text-slate-500 shrink-0"></i>
+                            <div>
+                                <div class="text-xs sm:text-sm font-semibold">Profesional & Ringkas</div>
+                                <div class="text-[11px] text-slate-500">To-the-point, standar bisnis</div>
+                            </div>
+                        </button>
+                        <button type="button" data-tone="jurnalistik" class="tone-btn flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl border border-slate-200 hover:border-slate-300 bg-white text-slate-700 text-left transition-all">
+                            <i data-lucide="newspaper" class="w-4 h-4 text-slate-500 shrink-0"></i>
+                            <div>
+                                <div class="text-xs sm:text-sm font-semibold">Jurnalistik / Blog</div>
+                                <div class="text-[11px] text-slate-500">Informatif, renyah, enak dibaca</div>
+                            </div>
+                        </button>
+                        <button type="button" data-tone="akademis" class="tone-btn flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl border border-slate-200 hover:border-slate-300 bg-white text-slate-700 text-left transition-all">
+                            <i data-lucide="graduation-cap" class="w-4 h-4 text-slate-500 shrink-0"></i>
+                            <div>
+                                <div class="text-xs sm:text-sm font-semibold">Akademis tapi Lugas</div>
+                                <div class="text-[11px] text-slate-500">Baku (PUEBI), objektif, jernih</div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex items-end shrink-0">
+                    <button id="btnAnalyze" type="button" class="w-full xl:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-semibold rounded-xl shadow-sm hover:shadow transition-all disabled:opacity-60 disabled:cursor-not-allowed">
+                        <i data-lucide="scan-search" class="w-5 h-5"></i>
+                        <span>Analisis & Sarankan Pengganti</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Workspace Utama -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            
+            <!-- Kolom Kiri (5 cols): Input Teks AI & Detektor Skor -->
+            <div class="lg:col-span-5 flex flex-col gap-6">
+                <div class="flex flex-col bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div class="px-5 py-3.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                            <h2 class="text-sm font-bold text-slate-800">Teks Asli (Terindikasi AI)</h2>
+                        </div>
+                        <span id="charCount" class="text-xs text-slate-500 font-medium">0 kata • 0 karakter</span>
+                    </div>
+
+                    <!-- Area Input -->
+                    <div class="relative flex-1 flex flex-col">
+                        <textarea id="inputText" rows="12" class="w-full flex-1 p-5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none resize-y leading-relaxed" placeholder="Tempelkan teks buatan AI di sini... Contohnya tulisan yang penuh kata 'menyelami', 'lanskap', 'krusial', 'tidak dapat dipungkiri', 'membuka tabir', atau kalimat panjang berpola seragam."></textarea>
+                    </div>
+
+                    <!-- Skor Indikasi Pola AI & Detektor Klise Real-time -->
+                    <div class="p-4 bg-slate-50 border-t border-slate-200">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center gap-1.5 text-xs font-semibold text-slate-700">
+                                <i data-lucide="gauge" class="w-4 h-4 text-indigo-600"></i>
+                                <span>Skor Indikasi Pola AI (Awal):</span>
+                            </div>
+                            <span id="initialAiScoreBadge" class="px-2.5 py-0.5 text-xs font-bold rounded-full bg-slate-200 text-slate-700">
+                                0% (Menunggu teks)
+                            </span>
+                        </div>
+                        
+                        <!-- Progress Bar Skor AI -->
+                        <div class="w-full h-2 bg-slate-200 rounded-full overflow-hidden mb-3">
+                            <div id="initialAiScoreBar" class="h-full bg-slate-400 transition-all duration-300" style="width: 0%"></div>
+                        </div>
+
+                        <!-- Preview sorotan kata klise -->
+                        <div id="clichePreviewContainer" class="hidden pt-2 border-t border-slate-200/80">
+                            <div class="flex items-center justify-between mb-1.5">
+                                <span class="text-[11px] font-semibold text-amber-900">Kosakata Klise Terdeteksi:</span>
+                                <span id="clicheCountText" class="text-[11px] font-bold text-amber-700">0 frasa</span>
+                            </div>
+                            <div id="clicheTags" class="flex flex-wrap gap-1.5 mb-2.5"></div>
+                            <details class="group">
+                                <summary class="text-xs font-medium text-indigo-600 cursor-pointer hover:underline select-none">
+                                    Lihat sorotan dalam teks &rsaquo;
+                                </summary>
+                                <div id="highlightedTextBox" class="mt-2 p-3 bg-white rounded-xl border border-amber-200 text-xs text-slate-700 leading-relaxed max-h-40 overflow-y-auto"></div>
+                            </details>
+                        </div>
+                        <p id="clicheEmptyMsg" class="text-xs text-slate-500">
+                            Tempelkan tulisan untuk melihat skor indikasi AI dan kata-kata klise secara otomatis.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kolom Kanan (7 cols): Saran Penggantian Interaktif & Editor Draf Akhir -->
+            <div class="lg:col-span-7 flex flex-col gap-6">
+                
+                <!-- Panel 1: Kartu Saran Penggantian Kalimat Interaktif -->
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div class="px-5 py-3.5 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center justify-between gap-2">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-indigo-500"></span>
+                            <h2 class="text-sm font-bold text-slate-800">Saran Pengganti Per-Kalimat / Frasa</h2>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span id="appliedCounterBadge" class="hidden px-2.5 py-0.5 text-xs font-semibold rounded-full bg-indigo-100 text-indigo-800">
+                                0/0 diterapkan
+                            </span>
+                            <button id="btnApplyBestAll" type="button" class="hidden inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 rounded-lg transition-colors">
+                                <i data-lucide="wand-2" class="w-3.5 h-3.5"></i>
+                                <span>Terapkan Semua Opsi #1</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- State Kosong -->
+                    <div id="suggestionsPlaceholder" class="p-8 text-center">
+                        <div class="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center mx-auto mb-3">
+                            <i data-lucide="split" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-sm font-bold text-slate-800 mb-1">Belum Ada Analisis Kalimat</h3>
+                        <p class="text-xs text-slate-500 max-w-md mx-auto leading-relaxed">
+                            Klik tombol <strong class="text-slate-700">"Analisis & Sarankan Pengganti"</strong> di atas. AI akan memecah kalimat yang terdeteksi kaku/berpola robot dan memberikan 3 opsi pengganti yang bisa Anda pilih langsung.
+                        </p>
+                    </div>
+
+                    <!-- State Loading -->
+                    <div id="suggestionsLoading" class="hidden p-10 text-center">
+                        <div class="w-10 h-10 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin mx-auto mb-4"></div>
+                        <p class="text-sm font-bold text-slate-800">Mendeteksi struktur kalimat berpola AI...</p>
+                        <p class="text-xs text-slate-500 mt-1">Menyiapkan variasi panjang kalimat (burstiness) dan kosakata yang lebih alami.</p>
+                    </div>
+
+                    <!-- Daftar Kartu Saran -->
+                    <div id="suggestionsListContainer" class="hidden p-4 sm:p-5 space-y-4 max-h-[540px] overflow-y-auto bg-slate-50/50">
+                        <!-- Kartu saran interaktif akan dirender di sini -->
+                    </div>
+                </div>
+
+                <!-- Panel 2: Editor Hasil Akhir & Perbandingan Skor AI -->
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div class="px-5 py-3.5 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center justify-between gap-2">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                            <h2 class="text-sm font-bold text-slate-800">Draf Hasil Akhir (Dapat Diedit Manual)</h2>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button id="btnResetDraft" type="button" disabled class="inline-flex items-center gap-1 px-2.5 py-1.5 text-xs font-medium text-slate-600 hover:text-slate-900 bg-white border border-slate-200 hover:bg-slate-50 rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed" title="Kembalikan ke teks asli">
+                                <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+                                <span>Reset Draf</span>
+                            </button>
+                            <button id="btnCopy" type="button" disabled class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg shadow-2xs transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
+                                <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                                <span>Salin Hasil Akhir</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Indikator Penurunan Skor AI -->
+                    <div id="scoreComparisonBar" class="hidden px-5 py-3 bg-emerald-50/80 border-b border-emerald-200/80 flex flex-wrap items-center justify-between gap-3">
+                        <div class="flex items-center gap-2 text-xs">
+                            <i data-lucide="shield-check" class="w-4 h-4 text-emerald-600 shrink-0"></i>
+                            <span class="font-medium text-emerald-950">Perkiraan Skor Indikasi AI Sekarang:</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-xs">
+                            <span id="scoreBeforeTag" class="px-2 py-0.5 rounded bg-rose-100 text-rose-800 font-semibold line-through">85%</span>
+                            <span class="text-slate-400">&rarr;</span>
+                            <span id="scoreAfterTag" class="px-2.5 py-0.5 rounded-full bg-emerald-600 text-white font-bold">18% (Sangat Alami)</span>
+                        </div>
+                    </div>
+
+                    <!-- Textarea Draf Akhir -->
+                    <div class="p-4 sm:p-5">
+                        <textarea id="finalDraftText" rows="9" class="w-full p-4 text-sm text-slate-800 bg-slate-50/60 focus:bg-white border border-slate-200 focus:border-indigo-500 rounded-xl focus:outline-none resize-y leading-relaxed transition-colors" placeholder="Draf akhir akan muncul di sini setelah analisis. Setiap opsi kalimat yang Anda klik di atas akan otomatis menggantikan kalimat kaku di dalam draf ini, dan Anda juga bebas menyuntingnya langsung di kotak ini."></textarea>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Kamus Mini Referensi Klise AI -->
+        <section class="mt-8 bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-sm">
+            <div class="flex items-center gap-2 mb-3">
+                <i data-lucide="book-open" class="w-5 h-5 text-indigo-600"></i>
+                <h3 class="text-base font-bold text-slate-900">Bagaimana Detektor AI Mengenali Tulisan Robot?</h3>
+            </div>
+            <p class="text-xs sm:text-sm text-slate-600 mb-4 leading-relaxed">
+                Selain kosakata terjemahan harfiah dari bahasa Inggris, alat deteksi AI mengukur <strong>Perplexity</strong> (pilihan kata yang terlalu tertebak/klise) dan <strong>Burstiness</strong> (panjang kalimat yang monoton/seragam). Aplikasi ini membantu Anda memecah kedua pola tersebut:
+            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200/70">
+                    <span class="font-semibold text-rose-600 line-through">"Menyelami / Membuka tabir"</span>
+                    <div class="text-slate-400 my-0.5">&darr; (terjemahan <em>delve / unveil</em>)</div>
+                    <span class="font-semibold text-emerald-700">"Mengulas / membahas / mengungkap"</span>
+                </div>
+                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200/70">
+                    <span class="font-semibold text-rose-600 line-through">"Tidak dapat dipungkiri bahwa"</span>
+                    <div class="text-slate-400 my-0.5">&darr; (frasa pengisi / <em>filler</em> AI)</div>
+                    <span class="font-semibold text-emerald-700">Langsung sebutkan faktanya</span>
+                </div>
+                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200/70">
+                    <span class="font-semibold text-rose-600 line-through">"Lanskap / Permadani / Katalisator"</span>
+                    <div class="text-slate-400 my-0.5">&darr; (metafora hiperbolis AI)</div>
+                    <span class="font-semibold text-emerald-700">"Dunia / perpaduan / pemicu"</span>
+                </div>
+                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200/70">
+                    <span class="font-semibold text-rose-600 line-through">"Bukan hanya X, melainkan Y"</span>
+                    <div class="text-slate-400 my-0.5">&darr; (struktur paralel berulang)</div>
+                    <span class="font-semibold text-emerald-700">Variasikan kalimat pendek &amp; panjang</span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-white border-t border-slate-200 py-4 mt-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-xs text-slate-500">
+            Penyunting Bahasa AI &bull; Analisis struktur kalimat &amp; saran pengganti interaktif agar tulisan Bahasa Indonesia lebih manusiawi.
+        </div>
+    </footer>
+
+    <script>
+        // Inisialisasi ikon Lucide
+        lucide.createIcons();
+
+        // Daftar kamus pola/kosakata klise AI dalam Bahasa Indonesia beserta padanan alaminya
+        const AI_CLICHE_PATTERNS = [
+            { regex: /\bmenyelami(\s+lebih\s+dalam)?\b/gi, label: "menyelami", suggestion: "membahas / mengulas / memahami", weight: 12 },
+            { regex: /\bmembuka\s+tabir\b/gi, label: "membuka tabir", suggestion: "mengungkap / menjelaskan", weight: 14 },
+            { regex: /\btidak\s+dapat\s+dipungkiri(\s+bahwa)?\b/gi, label: "tidak dapat dipungkiri", suggestion: "memang / kenyataannya / hapus saja", weight: 12 },
+            { regex: /\btak\s+dapat\s+dipungkiri(\s+bahwa)?\b/gi, label: "tak dapat dipungkiri", suggestion: "memang / nyatanya", weight: 12 },
+            { regex: /\blanskap(\s+digital|\s+bisnis|\s+teknologi)?\b/gi, label: "lanskap", suggestion: "dunia / situasi / peta persaingan", weight: 12 },
+            { regex: /\bpermadani(\s+yang\s+kaya)?\b/gi, label: "permadani", suggestion: "perpaduan / ragam / keragaman", weight: 15 },
+            { regex: /\bkrusial\b/gi, label: "krusial", suggestion: "penting / utama / penentu", weight: 8 },
+            { regex: /\bmenggarisbawahi\b/gi, label: "menggarisbawahi", suggestion: "menekankan / menunjukkan", weight: 10 },
+            { regex: /\bmerangkul\b/gi, label: "merangkul", suggestion: "menerima / menerapkan / memanfaatkan", weight: 10 },
+            { regex: /\bmenavigasi\b/gi, label: "menavigasi", suggestion: "menghadapi / menjalani / mengelola", weight: 11 },
+            { regex: /\bmemanfaatkan\s+kekuatan\b/gi, label: "memanfaatkan kekuatan", suggestion: "menggunakan / mengoptimalkan", weight: 12 },
+            { regex: /\bdi\s+era\s+digital(\s+yang\s+terus\s+berkembang)?\b/gi, label: "di era digital", suggestion: "saat ini / di tengah perkembangan teknologi", weight: 12 },
+            { regex: /\bdi\s+dunia\s+yang\s+serba\s+cepat(\s+ini)?\b/gi, label: "di dunia yang serba cepat", suggestion: "saat ini / di tengah kesibukan", weight: 12 },
+            { regex: /\bbukan\s+hanya\s+[^,.]+,\s*(tetapi|melainkan)\s+juga\b/gi, label: "bukan hanya X, melainkan juga Y", suggestion: "sederhanakan langsung ke poin utamanya", weight: 11 },
+            { regex: /\bsebagai\s+kesimpulan\b/gi, label: "sebagai kesimpulan", suggestion: "singkatnya / jadi / pada akhirnya", weight: 12 },
+            { regex: /\bpenting\s+untuk\s+dicatat(\s+bahwa)?\b/gi, label: "penting untuk dicatat", suggestion: "perlu diingat / perlu diketahui", weight: 11 },
+            { regex: /\bperlu\s+digarisbawahi(\s+bahwa)?\b/gi, label: "perlu digarisbawahi", suggestion: "perlu ditekankan / intinya", weight: 11 },
+            { regex: /\bmenjadi\s+bukti\s+nyata\b/gi, label: "menjadi bukti nyata", suggestion: "membuktikan / menunjukkan", weight: 10 },
+            { regex: /\bmembuka\s+jalan\s+bagi\b/gi, label: "membuka jalan bagi", suggestion: "memungkinkan / mempermudah", weight: 10 },
+            { regex: /\bpengubah\s+permainan\b/gi, label: "pengubah permainan", suggestion: "terobosan baru / inovasi besar", weight: 14 },
+            { regex: /\bholistik\b/gi, label: "holistik", suggestion: "menyeluruh / utuh", weight: 9 },
+            { regex: /\bsinergi\b/gi, label: "sinergi", suggestion: "kerja sama / kolaborasi", weight: 8 },
+            { regex: /\bkatalis(ator)?\b/gi, label: "katalisator", suggestion: "pendorong / pemicu", weight: 11 },
+            { regex: /\bpilar\s+utama\b/gi, label: "pilar utama", suggestion: "fondasi / dasar utama", weight: 9 }
+        ];
+
+        // Contoh teks khas keluaran AI
+        const SAMPLE_AI_TEXT = `Di era digital yang terus berkembang saat ini, tidak dapat dipungkiri bahwa peran kecerdasan buatan menjadi hal yang sangat krusial bagi kesuksesan bisnis. Artikel ini akan menyelami lebih dalam dan membuka tabir bagaimana perusahaan dapat menavigasi lanskap teknologi yang kompleks serta memanfaatkan kekuatan otomatisasi.
+
+Penting untuk dicatat bahwa adopsi teknologi bukan hanya sekadar tren sementara, melainkan juga pengubah permainan yang membuka jalan bagi efisiensi operasional. Dengan merangkul pendekatan yang holistik, organisasi dapat menciptakan permadani inovasi yang kaya dan menggarisbawahi komitmen mereka terhadap pertumbuhan berkelanjutan. Sebagai kesimpulan, sinergi antara manusia dan mesin menjadi katalisator utama menuju masa depan kerja yang lebih cerah.`;
+
+        // State aplikasi
+        let selectedTone = 'santai';
+        let isProcessing = false;
+        let currentOriginalText = '';
+        let initialAiScore = 0;
+        // Menyimpan array item saran: { id, originalSegment, reason, category, options: [], selectedOptionIndex: null | number }
+        let suggestionItems = [];
+
+        // Referensi elemen DOM
+        const inputText = document.getElementById('inputText');
+        const finalDraftText = document.getElementById('finalDraftText');
+        const charCount = document.getElementById('charCount');
+        const initialAiScoreBadge = document.getElementById('initialAiScoreBadge');
+        const initialAiScoreBar = document.getElementById('initialAiScoreBar');
+        const clichePreviewContainer = document.getElementById('clichePreviewContainer');
+        const clicheCountText = document.getElementById('clicheCountText');
+        const clicheEmptyMsg = document.getElementById('clicheEmptyMsg');
+        const clicheTags = document.getElementById('clicheTags');
+        const highlightedTextBox = document.getElementById('highlightedTextBox');
+        const btnSample = document.getElementById('btnSample');
+        const btnClear = document.getElementById('btnClear');
+        const btnAnalyze = document.getElementById('btnAnalyze');
+        const btnApplyBestAll = document.getElementById('btnApplyBestAll');
+        const btnResetDraft = document.getElementById('btnResetDraft');
+        const btnCopy = document.getElementById('btnCopy');
+        const toneButtons = document.querySelectorAll('.tone-btn');
+        
+        const suggestionsPlaceholder = document.getElementById('suggestionsPlaceholder');
+        const suggestionsLoading = document.getElementById('suggestionsLoading');
+        const suggestionsListContainer = document.getElementById('suggestionsListContainer');
+        const appliedCounterBadge = document.getElementById('appliedCounterBadge');
+        
+        const scoreComparisonBar = document.getElementById('scoreComparisonBar');
+        const scoreBeforeTag = document.getElementById('scoreBeforeTag');
+        const scoreAfterTag = document.getElementById('scoreAfterTag');
+
+        // Fungsi menampilkan notifikasi toast
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMessage');
+            const toastIcon = document.getElementById('toastIcon');
+
+            toastMsg.textContent = message;
+            if (isError) {
+                toastIcon.setAttribute('data-lucide', 'alert-circle');
+                toastIcon.classList.remove('text-emerald-400');
+                toastIcon.classList.add('text-rose-400');
+            } else {
+                toastIcon.setAttribute('data-lucide', 'check-circle');
+                toastIcon.classList.remove('text-rose-400');
+                toastIcon.classList.add('text-emerald-400');
+            }
+            lucide.createIcons();
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        // Fungsi escape HTML
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Hitung skor indikasi pola AI (0 - 100%) berdasarkan klise & keseragaman panjang kalimat (burstiness)
+        function calculateAiScore(text) {
+            const trimmed = text.trim();
+            if (!trimmed) return { score: 0, totalMatches: 0, foundLabels: new Map() };
+
+            let clicheScore = 0;
+            let totalMatches = 0;
+            const foundLabels = new Map();
+
+            AI_CLICHE_PATTERNS.forEach(pattern => {
+                const matches = trimmed.match(pattern.regex);
+                if (matches && matches.length > 0) {
+                    totalMatches += matches.length;
+                    clicheScore += matches.length * pattern.weight;
+                    const existing = foundLabels.get(pattern.label) || { count: 0, suggestion: pattern.suggestion };
+                    existing.count += matches.length;
+                    foundLabels.set(pattern.label, existing);
+                }
+            });
+
+            // Hitung keseragaman panjang kalimat (low burstiness = ciri AI)
+            const sentences = trimmed.split(/[.!?]+/).map(s => s.trim()).filter(s => s.length > 0);
+            let uniformityBonus = 0;
+            if (sentences.length >= 3) {
+                const lengths = sentences.map(s => s.split(/\s+/).length);
+                const mean = lengths.reduce((a, b) => a + b, 0) / lengths.length;
+                const variance = lengths.reduce((sum, len) => sum + Math.pow(len - mean, 2), 0) / lengths.length;
+                const stdDev = Math.sqrt(variance);
+                // Jika standar deviasi panjang kalimat sangat kecil (< 4 kata) dan kalimat rata-rata panjang (> 14 kata)
+                if (stdDev < 4.5 && mean > 14) {
+                    uniformityBonus = 18;
+                } else if (stdDev < 6 && mean > 12) {
+                    uniformityBonus = 10;
+                }
+            }
+
+            // Normalisasi skor berdasarkan panjang teks
+            const wordCount = trimmed.split(/\s+/).length;
+            const densityFactor = Math.max(0.7, Math.min(1.4, 80 / Math.max(wordCount, 25)));
+            let rawScore = Math.round((clicheScore * densityFactor) + uniformityBonus);
+            
+            // Minimal skor jika ada minimal 1 klise
+            if (totalMatches > 0 && rawScore < 25) rawScore = 25 + (totalMatches * 5);
+            const finalScore = Math.min(98, Math.max(5, rawScore));
+
+            return { score: finalScore, totalMatches, foundLabels };
+        }
+
+        // Analisis lokal real-time untuk input teks
+        function analyzeLocalCliches(text) {
+            const trimmed = text.trim();
+            const words = trimmed ? trimmed.split(/\s+/).length : 0;
+            charCount.textContent = `${words} kata • ${text.length} karakter`;
+
+            if (!trimmed) {
+                initialAiScore = 0;
+                initialAiScoreBadge.textContent = '0% (Menunggu teks)';
+                initialAiScoreBadge.className = 'px-2.5 py-0.5 text-xs font-bold rounded-full bg-slate-200 text-slate-700';
+                initialAiScoreBar.style.width = '0%';
+                initialAiScoreBar.className = 'h-full bg-slate-400 transition-all duration-300';
+                clichePreviewContainer.classList.add('hidden');
+                clicheEmptyMsg.classList.remove('hidden');
+                return;
+            }
+
+            const { score, totalMatches, foundLabels } = calculateAiScore(text);
+            initialAiScore = score;
+
+            // Update tampilan skor awal
+            initialAiScoreBar.style.width = `${score}%`;
+            if (score >= 65) {
+                initialAiScoreBadge.textContent = `${score}% (Tinggi - Sangat Terindikasi AI)`;
+                initialAiScoreBadge.className = 'px-2.5 py-0.5 text-xs font-bold rounded-full bg-rose-100 text-rose-800';
+                initialAiScoreBar.className = 'h-full bg-rose-500 transition-all duration-300';
+            } else if (score >= 35) {
+                initialAiScoreBadge.textContent = `${score}% (Sedang - Terdeteksi Pola AI)`;
+                initialAiScoreBadge.className = 'px-2.5 py-0.5 text-xs font-bold rounded-full bg-amber-100 text-amber-800';
+                initialAiScoreBar.className = 'h-full bg-amber-500 transition-all duration-300';
+            } else {
+                initialAiScoreBadge.textContent = `${score}% (Rendah - Cukup Alami)`;
+                initialAiScoreBadge.className = 'px-2.5 py-0.5 text-xs font-bold rounded-full bg-emerald-100 text-emerald-800';
+                initialAiScoreBar.className = 'h-full bg-emerald-500 transition-all duration-300';
+            }
+
+            let highlightedHtml = escapeHtml(text);
+            AI_CLICHE_PATTERNS.forEach(pattern => {
+                if (pattern.regex.test(text)) {
+                    highlightedHtml = highlightedHtml.replace(pattern.regex, (matched) => {
+                        return `<span class="highlight-cliche" title="Saran alami: ${pattern.suggestion}">${matched}</span>`;
+                    });
+                }
+            });
+
+            if (totalMatches > 0) {
+                clicheEmptyMsg.classList.add('hidden');
+                clichePreviewContainer.classList.remove('hidden');
+                clicheCountText.textContent = `${totalMatches} frasa klise`;
+
+                clicheTags.innerHTML = '';
+                foundLabels.forEach((info, label) => {
+                    const tag = document.createElement('span');
+                    tag.className = 'inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-white border border-amber-300 text-[11px] text-amber-900';
+                    tag.title = `Saran alami: ${info.suggestion}`;
+                    tag.innerHTML = `<span>"${label}"</span><span class="bg-amber-100 text-amber-800 px-1 rounded font-bold">${info.count}x</span>`;
+                    clicheTags.appendChild(tag);
+                });
+
+                highlightedTextBox.innerHTML = highlightedHtml.replace(/\n/g, '<br>');
+            } else {
+                clichePreviewContainer.classList.add('hidden');
+                clicheEmptyMsg.textContent = 'Tidak ditemukan kata klise umum, namun klik "Analisis & Sarankan Pengganti" untuk memeriksa struktur kalimat.';
+                clicheEmptyMsg.classList.remove('hidden');
+            }
+        }
+
+        // Event listener perubahan input teks
+        inputText.addEventListener('input', () => {
+            analyzeLocalCliches(inputText.value);
+        });
+
+        // Pemilihan Gaya Bahasa (Tone)
+        toneButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                toneButtons.forEach(b => {
+                    b.classList.remove('active', 'border-2', 'border-indigo-600', 'bg-indigo-50/70', 'text-indigo-900');
+                    b.classList.add('border', 'border-slate-200', 'bg-white', 'text-slate-700');
+                    const icon = b.querySelector('svg');
+                    if (icon) {
+                        icon.classList.remove('text-indigo-600');
+                        icon.classList.add('text-slate-500');
+                    }
+                });
+
+                btn.classList.remove('border', 'border-slate-200', 'bg-white', 'text-slate-700');
+                btn.classList.add('active', 'border-2', 'border-indigo-600', 'bg-indigo-50/70', 'text-indigo-900');
+                const activeIcon = btn.querySelector('svg');
+                if (activeIcon) {
+                    activeIcon.classList.remove('text-slate-500');
+                    activeIcon.classList.add('text-indigo-600');
+                }
+
+                selectedTone = btn.dataset.tone;
+            });
+        });
+
+        // Muat Contoh Teks AI
+        btnSample.addEventListener('click', () => {
+            inputText.value = SAMPLE_AI_TEXT;
+            analyzeLocalCliches(SAMPLE_AI_TEXT);
+            showToast('Contoh teks AI berhasil dimuat');
+        });
+
+        // Bersihkan Semua Teks
+        btnClear.addEventListener('click', () => {
+            inputText.value = '';
+            finalDraftText.value = '';
+            suggestionItems = [];
+            currentOriginalText = '';
+            analyzeLocalCliches('');
+            
+            suggestionsListContainer.classList.add('hidden');
+            suggestionsPlaceholder.classList.remove('hidden');
+            appliedCounterBadge.classList.add('hidden');
+            btnApplyBestAll.classList.add('hidden');
+            scoreComparisonBar.classList.add('hidden');
+            btnCopy.disabled = true;
+            btnResetDraft.disabled = true;
+        });
+
+        // Reset Draf ke Teks Asli
+        btnResetDraft.addEventListener('click', () => {
+            if (!currentOriginalText) return;
+            suggestionItems.forEach(item => {
+                item.selectedOptionIndex = null;
+            });
+            renderSuggestionCards();
+            rebuildFinalDraft();
+            showToast('Draf dikembalikan ke teks asli');
+        });
+
+        // Terapkan Semua Opsi Terbaik (#1)
+        btnApplyBestAll.addEventListener('click', () => {
+            if (suggestionItems.length === 0) return;
+            suggestionItems.forEach(item => {
+                if (item.options && item.options.length > 0) {
+                    item.selectedOptionIndex = 0;
+                }
+            });
+            renderSuggestionCards();
+            rebuildFinalDraft();
+            showToast('Semua saran utama (#1) telah diterapkan ke draf!');
+        });
+
+        // Salin Hasil Akhir ke Clipboard
+        btnCopy.addEventListener('click', () => {
+            if (!finalDraftText.value) return;
+            finalDraftText.select();
+            finalDraftText.setSelectionRange(0, 99999);
+            try {
+                document.execCommand('copy');
+                showToast('Hasil akhir berhasil disalin ke papan klip!');
+            } catch (err) {
+                showToast('Gagal menyalin teks', true);
+            }
+            window.getSelection().removeAllRanges();
+        });
+
+        // Bangun ulang Draf Akhir berdasarkan opsi yang dipilih pengguna pada kartu saran
+        function rebuildFinalDraft() {
+            let draft = currentOriginalText;
+            let appliedCount = 0;
+
+            suggestionItems.forEach(item => {
+                if (item.selectedOptionIndex !== null && item.options[item.selectedOptionIndex]) {
+                    appliedCount++;
+                    const replacement = item.options[item.selectedOptionIndex].text;
+                    // Ganti segmen asli di dalam draf (gunakan pencocokan eksak terlebih dahulu, fallback ke case-insensitive)
+                    if (draft.includes(item.originalSegment)) {
+                        draft = draft.replace(item.originalSegment, replacement);
+                    } else {
+                        const escaped = item.originalSegment.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                        const regex = new RegExp(escaped, 'i');
+                        draft = draft.replace(regex, replacement);
+                    }
+                }
+            });
+
+            finalDraftText.value = draft;
+            btnCopy.disabled = !draft.trim();
+            btnResetDraft.disabled = !currentOriginalText;
+
+            // Update badge counter
+            if (suggestionItems.length > 0) {
+                appliedCounterBadge.textContent = `${appliedCount}/${suggestionItems.length} diterapkan`;
+                appliedCounterBadge.classList.remove('hidden');
+            }
+
+            updateAfterScore(draft);
+        }
+
+        // Hitung & tampilkan perbandingan skor setelah diperbaiki
+        function updateAfterScore(draftText) {
+            if (!draftText.trim()) {
+                scoreComparisonBar.classList.add('hidden');
+                return;
+            }
+
+            const { score: afterScore } = calculateAiScore(draftText);
+            // Pastikan jika pengguna menerapkan saran, skor menunjukkan penurunan yang realistis
+            const appliedCount = suggestionItems.filter(i => i.selectedOptionIndex !== null).length;
+            let displayAfterScore = afterScore;
+            if (appliedCount > 0 && displayAfterScore >= initialAiScore) {
+                displayAfterScore = Math.max(8, initialAiScore - (appliedCount * 14));
+            }
+
+            scoreComparisonBar.classList.remove('hidden');
+            scoreBeforeTag.textContent = `${initialAiScore}%`;
+            
+            if (displayAfterScore <= 25) {
+                scoreAfterTag.textContent = `${displayAfterScore}% (Sangat Alami & Lolos Deteksi)`;
+                scoreAfterTag.className = 'px-2.5 py-0.5 rounded-full bg-emerald-600 text-white font-bold';
+            } else if (displayAfterScore <= 45) {
+                scoreAfterTag.textContent = `${displayAfterScore}% (Cukup Alami)`;
+                scoreAfterTag.className = 'px-2.5 py-0.5 rounded-full bg-teal-600 text-white font-bold';
+            } else {
+                scoreAfterTag.textContent = `${displayAfterScore}% (Pilih lebih banyak saran di atas)`;
+                scoreAfterTag.className = 'px-2.5 py-0.5 rounded-full bg-amber-600 text-white font-bold';
+            }
+        }
+
+        // Update skor secara real-time saat pengguna mengedit manual draf akhir
+        finalDraftText.addEventListener('input', () => {
+            updateAfterScore(finalDraftText.value);
+            btnCopy.disabled = !finalDraftText.value.trim();
+        });
+
+        // Render kartu saran penggantian interaktif
+        function renderSuggestionCards() {
+            suggestionsListContainer.innerHTML = '';
+
+            if (suggestionItems.length === 0) {
+                suggestionsListContainer.innerHTML = `
+                    <div class="p-6 text-center bg-white rounded-xl border border-slate-200">
+                        <p class="text-sm font-semibold text-slate-800">Teks Anda sudah terlihat cukup alami!</p>
+                        <p class="text-xs text-slate-500 mt-1">Tidak ditemukan kalimat kaku yang perlu dirombak secara signifikan.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            suggestionItems.forEach((item, itemIdx) => {
+                const isApplied = item.selectedOptionIndex !== null;
+                const card = document.createElement('div');
+                card.className = `bg-white rounded-xl border transition-all p-4 shadow-2xs ${
+                    isApplied ? 'border-emerald-300 ring-1 ring-emerald-200/60' : 'border-slate-200'
+                }`;
+
+                // Header Kartu: Kategori Masalah & Status
+                const headerHtml = `
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-2.5">
+                        <div class="flex items-center gap-1.5">
+                            <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[11px] font-bold ${
+                                isApplied ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
+                            }">${itemIdx + 1}</span>
+                            <span class="px-2 py-0.5 rounded-md text-[11px] font-semibold bg-rose-50 text-rose-700 border border-rose-200/70">
+                                ${escapeHtml(item.category || 'Pola Kalimat AI')}
+                            </span>
+                        </div>
+                        ${
+                            isApplied
+                                ? `<button type="button" data-action="unselect" data-idx="${itemIdx}" class="text-[11px] font-semibold text-slate-500 hover:text-rose-600 underline">Batalkan pilihan</button>`
+                                : `<span class="text-[11px] font-medium text-slate-400">Pilih salah satu opsi di bawah:</span>`
+                        }
+                    </div>
+                `;
+
+                // Kalimat Asli & Alasan Terdeteksi AI
+                const originalHtml = `
+                    <div class="p-3 rounded-lg bg-rose-50/60 border border-rose-200/80 mb-3">
+                        <div class="text-[10px] font-bold uppercase tracking-wider text-rose-700 mb-1">Kalimat / Frasa Asli (Terdeteksi AI):</div>
+                        <p class="text-xs sm:text-sm text-slate-800 font-medium leading-relaxed">"${escapeHtml(item.originalSegment)}"</p>
+                        <div class="mt-2 pt-2 border-t border-rose-200/60 flex items-start gap-1.5 text-[11px] text-rose-800">
+                            <i data-lucide="info" class="w-3.5 h-3.5 text-rose-600 shrink-0 mt-0.5"></i>
+                            <span><strong>Alasan:</strong> ${escapeHtml(item.reason)}</span>
+                        </div>
+                    </div>
+                `;
+
+                // Opsi Pengganti (2 - 3 pilihan)
+                let optionsHtml = `<div class="space-y-2">`;
+                item.options.forEach((opt, optIdx) => {
+                    const isSelected = item.selectedOptionIndex === optIdx;
+                    optionsHtml += `
+                        <button type="button" data-action="select-option" data-item-idx="${itemIdx}" data-opt-idx="${optIdx}"
+                            class="option-card w-full text-left p-3 rounded-xl border flex items-start gap-3 ${
+                                isSelected
+                                    ? 'border-emerald-600 bg-emerald-50/80 text-emerald-950 shadow-2xs'
+                                    : 'border-slate-200 hover:border-indigo-400 hover:bg-indigo-50/30 bg-white text-slate-800'
+                            }">
+                            <div class="mt-0.5 shrink-0">
+                                ${
+                                    isSelected
+                                        ? `<span class="w-5 h-5 rounded-full bg-emerald-600 text-white flex items-center justify-center"><i data-lucide="check" class="w-3 h-3"></i></span>`
+                                        : `<span class="w-5 h-5 rounded-full border-2 border-slate-300 flex items-center justify-center text-[10px] font-bold text-slate-500">${optIdx + 1}</span>`
+                                }
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex flex-wrap items-center justify-between gap-1 mb-0.5">
+                                    <span class="text-[10px] font-bold uppercase tracking-wider ${
+                                        isSelected ? 'text-emerald-700' : 'text-indigo-600'
+                                    }">${escapeHtml(opt.styleTag || `Alternatif ${optIdx + 1}`)}</span>
+                                    ${
+                                        isSelected
+                                            ? `<span class="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-1.5 py-0.2 rounded">Terpasang di Draf</span>`
+                                            : `<span class="text-[10px] text-slate-400">Klik untuk gunakan</span>`
+                                    }
+                                </div>
+                                <p class="text-xs sm:text-sm leading-relaxed ${isSelected ? 'font-medium' : ''}">${escapeHtml(opt.text)}</p>
+                            </div>
+                        </button>
+                    `;
+                });
+                optionsHtml += `</div>`;
+
+                card.innerHTML = headerHtml + originalHtml + optionsHtml;
+                suggestionsListContainer.appendChild(card);
+            });
+
+            // Pasang event listener untuk setiap tombol opsi
+            suggestionsListContainer.querySelectorAll('[data-action="select-option"]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const itemIdx = parseInt(btn.dataset.itemIdx, 10);
+                    const optIdx = parseInt(btn.dataset.optIdx, 10);
+                    suggestionItems[itemIdx].selectedOptionIndex = optIdx;
+                    renderSuggestionCards();
+                    rebuildFinalDraft();
+                });
+            });
+
+            suggestionsListContainer.querySelectorAll('[data-action="unselect"]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const idx = parseInt(btn.dataset.idx, 10);
+                    suggestionItems[idx].selectedOptionIndex = null;
+                    renderSuggestionCards();
+                    rebuildFinalDraft();
+                });
+            });
+
+            lucide.createIcons();
+        }
+
+        // Helper Fetch dengan Exponential Backoff untuk Gemini API
+        async function fetchWithRetry(url, options, maxRetries = 4) {
+            let delay = 1000;
+            for (let attempt = 0; attempt <= maxRetries; attempt++) {
+                try {
+                    const response = await fetch(url, options);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return await response.json();
+                } catch (error) {
+                    if (attempt === maxRetries) {
+                        throw error;
+                    }
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                    delay *= 2;
+                }
+            }
+        }
+
+        // Fungsi Utama: Analisis & Berikan Saran Pengganti Per-Kalimat dengan Gemini API
+        async function analyzeAndSuggestWithGemini() {
+            const text = inputText.value.trim();
+            if (!text) {
+                showToast('Silakan masukkan atau tempel teks terlebih dahulu.', true);
+                inputText.focus();
+                return;
+            }
+
+            if (isProcessing) return;
+            isProcessing = true;
+            btnAnalyze.disabled = true;
+
+            // Update UI ke state loading
+            suggestionsPlaceholder.classList.add('hidden');
+            suggestionsListContainer.classList.add('hidden');
+            appliedCounterBadge.classList.add('hidden');
+            btnApplyBestAll.classList.add('hidden');
+            suggestionsLoading.classList.remove('hidden');
+
+            const toneInstructions = {
+                santai: "Santai & Mengalir: gunakan bahasa Indonesia sehari-hari yang akrab, renyah, tidak kaku, dan terasa seperti ditulis langsung oleh manusia.",
+                profesional: "Profesional & Ringkas: gunakan bahasa bisnis yang lugas (to-the-point), jelas, modern, tanpa basa-basi klise.",
+                jurnalistik: "Jurnalistik / Artikel Blog: gunakan gaya penulisan media daring atau blog populer yang menarik, aktif, dan nyaman dibaca.",
+                akademis: "Akademis tapi Lugas: gunakan bahasa Indonesia baku sesuai PUEBI/EYD yang objektif dan jernih, tanpa metafora hiperbolis atau kalimat berbelit."
+            };
+
+            const systemPrompt = `Anda adalah pakar linguistik dan editor senior penutur asli Bahasa Indonesia yang ahli mendeteksi pola tulisan AI dan menyusun ulang kalimat agar lolos deteksi AI (humanizer).
+
+Tugas Anda:
+1. Identifikasi bagian-bagian kalimat atau klausa spesifik dari teks pengguna yang terdengar seperti buatan AI (misalnya mengandung kosakata klise terjemahan seperti "menyelami", "lanskap", "permadani", "krusial", "menggarisbawahi", "tidak dapat dipungkiri", "membuka tabir", "katalisator", "di era digital", "sebagai kesimpulan", atau memiliki struktur kalimat pasif dan ritme yang terlalu seragam/monoton).
+2. PENTING: Field 'originalSegment' HARUS merupakan potongan teks PERSIS (substring eksak, huruf besar/kecil dan tanda baca sama persis) yang ada di dalam teks masukan pengguna agar dapat digantikan secara otomatis di dalam draf.
+3. Untuk setiap 'originalSegment', jelaskan kategori masalah dan alasan singkat mengapa terdeteksi AI.
+4. Berikan tepat 3 opsi kalimat pengganti yang jauh lebih manusiawi dengan variasi panjang kalimat (burstiness tinggi: gabungkan kalimat pendek yang tegas dan kalimat mengalir), tanpa mengubah makna asli, sesuai gaya bahasa target: ${toneInstructions[selectedTone]}.`;
+
+            const apiKey = "";
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+
+            const payload = {
+                contents: [
+                    {
+                        parts: [
+                            { text: `Analisis teks berikut dan berikan saran pengganti per-kalimat/per-frasa agar tidak terdeteksi AI:\n\n${text}` }
+                        ]
+                    }
+                ],
+                systemInstruction: {
+                    parts: [{ text: systemPrompt }]
+                },
+                generationConfig: {
+                    responseMimeType: "application/json",
+                    responseSchema: {
+                        type: "OBJECT",
+                        properties: {
+                            suggestions: {
+                                type: "ARRAY",
+                                description: "Daftar kalimat atau frasa dari teks asli yang terdeteksi berpola AI beserta 3 opsi penggantinya.",
+                                items: {
+                                    type: "OBJECT",
+                                    properties: {
+                                        originalSegment: {
+                                            type: "STRING",
+                                            description: "Potongan kalimat/frasa PERSIS (exact substring) dari teks asli pengguna."
+                                        },
+                                        category: {
+                                            type: "STRING",
+                                            description: "Label singkat jenis masalah, misal: 'Kosakata Klise AI', 'Terlalu Hiperbolis', 'Pola Transisi Robot', atau 'Ritme Monoton'."
+                                        },
+                                        reason: {
+                                            type: "STRING",
+                                            description: "Penjelasan singkat mengapa bagian ini mudah terdeteksi sebagai tulisan AI."
+                                        },
+                                        options: {
+                                            type: "ARRAY",
+                                            description: "3 opsi kalimat pengganti yang jauh lebih natural, manusiawi, dan bervariasi.",
+                                            items: {
+                                                type: "OBJECT",
+                                                properties: {
+                                                    styleTag: {
+                                                        type: "STRING",
+                                                        description: "Label singkat pendekatan opsi ini, misal: 'Lugas & Singkat', 'Mengalir Natural', 'Variasi Aktif'."
+                                                    },
+                                                    text: {
+                                                        type: "STRING",
+                                                        description: "Teks pengganti yang siap menggantikan originalSegment secara mulus dalam paragraf."
+                                                    }
+                                                },
+                                                required: ["styleTag", "text"]
+                                            }
+                                        }
+                                    },
+                                    required: ["originalSegment", "category", "reason", "options"]
+                                }
+                            }
+                        },
+                        required: ["suggestions"]
+                    }
+                }
+            };
+
+            try {
+                const result = await fetchWithRetry(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const candidateText = result?.candidates?.[0]?.content?.parts?.[0]?.text;
+                if (!candidateText) {
+                    throw new Error("Respons kosong dari server.");
+                }
+
+                const parsed = JSON.parse(candidateText);
+                currentOriginalText = text;
+
+                // Simpan daftar saran dan filter hanya yang valid ada di teks asli
+                const rawSuggestions = Array.isArray(parsed.suggestions) ? parsed.suggestions : [];
+                suggestionItems = rawSuggestions
+                    .filter(s => s.originalSegment && s.options && s.options.length > 0)
+                    .map((s, idx) => ({
+                        id: idx,
+                        originalSegment: s.originalSegment,
+                        category: s.category || 'Pola AI',
+                        reason: s.reason || 'Terdeteksi menggunakan kosakata atau struktur kalimat khas AI.',
+                        options: s.options.slice(0, 3),
+                        selectedOptionIndex: null
+                    }));
+
+                suggestionsLoading.classList.add('hidden');
+                suggestionsListContainer.classList.remove('hidden');
+
+                if (suggestionItems.length > 0) {
+                    btnApplyBestAll.classList.remove('hidden');
+                }
+
+                renderSuggestionCards();
+                rebuildFinalDraft();
+                showToast(`Ditemukan ${suggestionItems.length} bagian yang bisa diperbaiki!`);
+            } catch (error) {
+                suggestionsLoading.classList.add('hidden');
+                suggestionsPlaceholder.classList.remove('hidden');
+                showToast('Gagal menganalisis teks. Silakan periksa koneksi dan coba lagi.', true);
+            } finally {
+                isProcessing = false;
+                btnAnalyze.disabled = false;
+            }
+        }
+
+        // Event listener tombol utama
+        btnAnalyze.addEventListener('click', analyzeAndSuggestWithGemini);
+    </script>
+</body>
+</html>
